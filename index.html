@@ -450,6 +450,8 @@ body{background:var(--k-0);color:var(--tx-1);font-family:var(--body);font-size:1
 .cardwrap{perspective:1100px;flex:none}
 .sway{transform-style:preserve-3d;animation:sway 8.4s ease-in-out infinite}
 @keyframes sway{0%,100%{transform:rotateY(-7deg) rotateX(2.5deg)}50%{transform:rotateY(7deg) rotateX(-2.5deg)}}
+/* QR이 보이는 동안은 카드를 평평하게 고정 — 흔들리면 실제로 스캔이 안 된다 */
+.cardwrap.qrmode .sway{animation:none;transform:none}
 .mcard{border-radius:16px;aspect-ratio:1.586;position:relative;transform-style:preserve-3d;
   transition:transform .85s var(--ease)}
 .mcard.flip{transform:rotateY(180deg)}
@@ -2170,8 +2172,14 @@ var mcard = $('mcard'), p4feed = $('p4feed'), tap4 = $('tap4');
 var joinN = 4, joinFull = false;
 function p4scroll(y){ if (p4feed) p4feed.style.transform = 'translateY(' + y + 'px)'; }
 function p4Loop(){
-  setTimeout(function(){ if (mcard) mcard.classList.add('flip'); }, 600);
-  setTimeout(function(){ if (mcard) mcard.classList.remove('flip'); }, 4800);
+  setTimeout(function(){
+    if (mcard){ mcard.classList.add('flip');
+      var w = mcard.closest ? mcard.closest('.cardwrap') : null; if (w) w.classList.add('qrmode'); }
+  }, 600);
+  setTimeout(function(){
+    if (mcard){ mcard.classList.remove('flip');
+      var w = mcard.closest ? mcard.closest('.cardwrap') : null; if (w) w.classList.remove('qrmode'); }
+  }, 4800);
   setTimeout(function(){ p4scroll(-118); }, 5200);
   setTimeout(function(){ tapAt(tap4, $('joinBtn')); }, 6200);
   setTimeout(function(){
