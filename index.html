@@ -606,6 +606,10 @@ html.gate-on .gate{display:grid}
   filter:grayscale(1) contrast(1.06);transition:filter .45s var(--ease),transform .7s var(--ease)}
 .mstage:hover img{filter:grayscale(.12) contrast(1.02);transform:scale(1.025)}
 .mstage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+/* 페이드 인 — 검정에서 서서히 밝아진다 (소리도 같은 시간 동안 0→100으로 올라감) */
+.mstage .fadeveil{position:absolute;inset:0;z-index:4;background:#050505;pointer-events:none;
+  opacity:1;transition:opacity 3s linear}
+.mstage .fadeveil.go{opacity:0}
 /* 유튜브 하단 컨트롤바·우상단 아이콘을 피해 좌상단에 둔다 */
 .soundon{position:absolute;left:13px;top:13px;z-index:6;font-family:var(--label);font-size:10.5px;
   letter-spacing:.12em;font-weight:600;padding:10px 15px;border-radius:999px;
@@ -2424,6 +2428,11 @@ $$('#marqTr span').forEach(function(sp){
 /* 진입 게이트가 호출할 음악 제어 핸들 (아래 MUSIC 블록에서 채워진다) */
 var startMusic = null, setSound = null;
 
+/* 진입 재생 연출 — 1번 곡의 인트로가 길어서 앞부분을 건너뛴다.
+   40초에서 시작해 3초(40~43초) 동안 화면과 소리를 함께 페이드 인 → 47초 클라이맥스가 제대로 터진다. */
+var INTRO_START = 40;   /* 시작 초 */
+var INTRO_FADE  = 3000; /* 페이드 인 시간(ms) */
+
 /* 첫 곡이 진입 시 자동 재생된다 — 순서를 바꾸면 자동 재생 곡도 바뀐다 */
 var TRACKS = [
   { id:'3ug0e84EwPA', t:'NUBREED NIGHT',  a:'ELLIA · MIXMIX TV',                      ty:'MIXSET' },
@@ -2448,20 +2457,58 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
       '<div class="scrim"></div><div class="pbtn">▶</div>' +
       '<div class="mi"><div class="t">' + tr.t + '</div><div class="a">' + tr.ty + ' · ' + tr.a + '</div></div>';
   }
+  /* 플레이어에 명령 보내기 (enablejsapi=1 이면 외부 라이브러리 없이 postMessage로 제어 가능).
+     플레이어가 준비되기 전 명령은 그냥 무시되므로, 초반에는 반복해서 보낸다. */
+  function cmd(func, args){
+    var f = stage.querySelector('iframe'); if (!f || !f.contentWindow) return;
+    try { f.contentWindow.postMessage(
+      JSON.stringify({ event:'command', func:func, args:args || [] }), '*'); } catch(e){}
+  }
+
+  /* 페이드 인 — 화면은 검정에서 밝아지고, 소리는 0에서 100까지 같이 올라간다 */
+  function fadeIn(dur, withSound){
+    var veil = $('fadeveil');
+    if (veil){
+      veil.style.transitionDuration = (dur / 1000) + 's';
+      /* rAF는 탭이 백그라운드면 호출되지 않아 검은 막이 영원히 남는다 → setTimeout으로 건다 */
+      setTimeout(function(){ veil.classList.add('go'); }, 40);
+      /* 어떤 이유로 트랜지션이 안 걸려도 영상이 가려진 채 남지 않도록 강제 제거 */
+      setTimeout(function(){ if (veil.parentNode) veil.parentNode.removeChild(veil); }, dur + 900);
+    }
+    if (!withSound) return;
+    var t0 = Date.now(), n = 0;
+    var iv = setInterval(function(){
+      var p = Math.min(1, (Date.now() - t0) / dur);
+      n++;
+      if (n <= 14) cmd('unMute');                  /* 준비 시점을 모르니 초반엔 계속 보냄 */
+      cmd('setVolume', [Math.round(p * 100)]);
+      if (p >= 1){
+        clearInterval(iv); muted = false;
+        cmd('unMute'); cmd('setVolume', [100]);    /* 마무리 확인 사살 */
+      }
+    }, 100);
+  }
+
   /* 실제 재생 — youtube-nocookie 임베드.
-     진입 자동 재생은 브라우저 정책상 반드시 무음이어야 해서 mute=1로 시작하고,
-     사용자가 버튼을 누르면(= user gesture) 소리 있는 상태로 다시 로드한다. */
-  function play(i, mute){
+     opts.start : 시작 초 (인트로 건너뛰기)  ·  opts.fade : 페이드 인 시간(ms)
+     페이드로 시작할 때는 URL을 mute=1로 두고 볼륨을 0에서 올린다 — 그래야 첫 순간에 소리가 튀지 않는다. */
+  function play(i, mute, opts){
+    opts = opts || {};
     var tr = TRACKS[i];
     muted = !!mute;
+    var wantSound = !muted;
+    var urlMute = (opts.fade && wantSound) ? 1 : (muted ? 1 : 0);
     stage.innerHTML =
       '<iframe src="https://www.youtube-nocookie.com/embed/' + tr.id +
-      '?autoplay=1&mute=' + (muted ? 1 : 0) + '&rel=0&modestbranding=1&playsinline=1" title="' + tr.t +
+      '?autoplay=1&mute=' + urlMute + (opts.start ? '&start=' + opts.start : '') +
+      '&rel=0&modestbranding=1&playsinline=1&enablejsapi=1" title="' + tr.t +
       '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' +
+      (opts.fade ? '<div class="fadeveil" id="fadeveil"></div>' : '') +
       (muted ? '<button type="button" class="soundon" id="soundon">♪ 音を出す / 소리 켜기</button>' : '');
     playing = true;
     var b = $('soundon');
     if (b) b.addEventListener('click', function(e){ e.stopPropagation(); play(cur, false); });
+    if (opts.fade) fadeIn(opts.fade, wantSound);
   }
   function mark(i){
     var rows = $$('#mlist .mi2');
@@ -2493,11 +2540,19 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
         게이트의 클릭이 user gesture라 그 뒤로는 소리 있는 재생이 허용된다. ── */
   mark(0); facade(0);
   startMusic = function(withSound){
-    if (withSound) play(cur, false);        /* 동의했으므로 소리 켜고 재생 */
-    else if (REDUCED) facade(cur);          /* 모션 최소화 설정이면 정지 화면 유지 */
-    else play(cur, true);                   /* 무음 자동 재생 */
+    if (REDUCED && !withSound){ facade(cur); return; }   /* 모션 최소화 + 무음이면 정지 화면 */
+    play(cur, !withSound, { start:INTRO_START, fade:INTRO_FADE });
   };
-  setSound = function(on){ play(cur, !on); };
+  /* 소리 토글은 리로드 대신 명령으로 — 재생 위치를 잃지 않는다 */
+  setSound = function(on){
+    if (playing){
+      cmd(on ? 'unMute' : 'mute');
+      if (on) cmd('setVolume', [100]);
+      muted = !on;
+      return;
+    }
+    play(cur, !on);
+  };
 })();
 
 /* ══════════ 진입 게이트 + 소리 토글 ══════════ */
