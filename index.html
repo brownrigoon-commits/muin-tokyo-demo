@@ -114,13 +114,56 @@ body{background:var(--k-0);color:var(--tx-1);font-family:var(--body);font-size:1
 .flash.on{animation:flashout 340ms linear 1}
 @keyframes flashout{0%{opacity:.90}22%{opacity:.90}100%{opacity:0}}
 
-/* ═════════════ 오프닝 커튼 ═════════════ */
-.opening{position:fixed;inset:0;z-index:100;background:var(--shiro);display:grid;place-items:center;pointer-events:none;
-  animation:curtain 1.35s var(--ease) forwards}
-.opening b{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:min(14vw,120px);color:var(--shiro-t);
-  letter-spacing:.01em;animation:curtainlogo 1.35s var(--ease) forwards}
-@keyframes curtain{0%,62%{clip-path:inset(0 0 0 0)}100%{clip-path:inset(0 0 0 100%)}}
-@keyframes curtainlogo{0%{transform:scale(.94);opacity:0}18%{opacity:1}62%{transform:scale(1);opacity:1}100%{transform:scale(1.04);opacity:1}}
+/* ═════════════ 진입 게이트 ═════════════
+   브라우저는 사용자 조작 없는 소리 재생을 막는다. 그래서 첫 화면에서 동의를 받고,
+   그 클릭(= user gesture)으로 소리 있는 재생을 시작한다.
+   JS가 죽어도 페이지가 막히지 않도록 기본은 display:none, 스크립트가 켠다. */
+.gate{position:fixed;inset:0;z-index:110;background:var(--k-0);display:none;place-items:center;
+  text-align:center;padding:28px;transition:clip-path .62s var(--ease)}
+html.gate-on .gate{display:grid}
+.gate.out{clip-path:inset(0 0 0 100%);pointer-events:none}
+.gate .glogo{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:min(15vw,124px);
+  line-height:.9;letter-spacing:.015em;color:var(--tx-1)}
+.gate .gsub{font-family:var(--label);font-size:min(3.2vw,17px);letter-spacing:.44em;color:var(--tx-3);
+  margin-top:13px;padding-left:.44em}
+.gate .gmsg{font-family:var(--jp);font-size:15px;color:var(--tx-2);margin-top:30px;line-height:1.75;
+  max-width:520px;margin-left:auto;margin-right:auto}
+.gate .gmsg b{display:block;font-size:21px;color:var(--tx-1);font-weight:700;margin-bottom:9px;letter-spacing:.02em}
+.gate .gmsg .ko{font-size:12.5px;margin-top:9px;color:var(--tx-3)}
+.gate .gmsg .ko b{display:inline;font-size:12.5px;color:var(--tx-2);margin:0}
+.gate .gnow{display:inline-flex;align-items:center;gap:9px;margin-top:22px;padding:8px 16px;
+  border:1px solid var(--line);border-radius:999px;
+  font-family:var(--label);font-size:10px;letter-spacing:.14em;color:var(--tx-3)}
+.gate .gnow b{color:var(--tx-1);font-weight:600}
+.gate .gnow .eq i{background:var(--tx-1)}
+.gate .gbtns{display:flex;justify-content:center;margin-top:24px}
+.gate .gp{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:17px;letter-spacing:.05em;
+  border-radius:999px;padding:19px 44px;cursor:pointer;border:1px solid var(--tx-1);line-height:1.2;
+  background:var(--tx-1);color:var(--k-0);
+  transition:transform .25s var(--ease),box-shadow .3s var(--ease);
+  animation:gpulse 2.4s ease-in-out infinite}
+@keyframes gpulse{0%,100%{box-shadow:0 0 0 0 rgba(128,128,128,.32)}50%{box-shadow:0 0 0 12px rgba(128,128,128,0)}}
+.gate .gp small{display:block;font-family:var(--ko);font-weight:400;font-size:11px;
+  letter-spacing:0;opacity:.75;margin-top:6px}
+.gate .gp:hover{transform:translateY(-2px)}
+.gate .gskip{display:block;margin:18px auto 0;background:none;border:0;cursor:pointer;padding:8px 10px;
+  font-family:var(--ko);font-size:11.5px;color:var(--tx-3);text-decoration:underline;text-underline-offset:4px}
+.gate .gskip:hover{color:var(--tx-2)}
+@media(max-width:719px){
+  .gate .gmsg{font-size:13.5px;margin-top:24px}
+  .gate .gmsg b{font-size:18px}
+  .gate .gp{padding:17px 30px;font-size:15px}
+}
+
+/* 화면을 따라다니는 컨트롤 (소리 · 테마) */
+.floatui{position:fixed;right:20px;bottom:20px;z-index:80;display:flex;gap:10px;align-items:center}
+.sndtog{font-family:var(--label);font-size:10px;letter-spacing:.16em;font-weight:600;cursor:pointer;
+  padding:10px 15px;border-radius:999px;border:1px solid var(--line-hi);background:var(--k-0);
+  color:var(--tx-2);line-height:1;box-shadow:0 10px 30px rgba(0,0,0,.20);
+  transition:background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
+.sndtog.on{background:var(--tx-1);color:var(--k-0);border-color:var(--tx-1)}
+@media(max-width:719px){.floatui{right:12px;bottom:12px;gap:7px}.sndtog{padding:9px 12px;font-size:9px}}
+@media print{.floatui{display:none}}
 
 /* ═════════════ HERO ═════════════ */
 .hero{position:relative;min-height:min(54vh,460px);display:flex;flex-direction:column;justify-content:center;
@@ -747,15 +790,13 @@ body.rest .spot{opacity:0}
 }
 
 /* ═════════════ WHITE / BLACK 토글 (화면 따라다님) ═════════════ */
-.themetog{position:fixed;right:20px;bottom:20px;z-index:80;display:flex;
-  border:1px solid var(--line-hi);border-radius:999px;background:var(--k-0);
+.themetog{display:flex;border:1px solid var(--line-hi);border-radius:999px;background:var(--k-0);
   box-shadow:0 10px 30px rgba(0,0,0,.20);overflow:hidden;backface-visibility:hidden}
 .themetog button{font-family:var(--label);font-size:10px;letter-spacing:.16em;font-weight:600;
   padding:10px 16px;border:0;background:transparent;color:var(--tx-3);cursor:pointer;line-height:1;
   transition:background .25s var(--ease),color .25s var(--ease)}
 .themetog button.on{background:var(--tx-1);color:var(--k-0)}
-@media(max-width:719px){.themetog{right:12px;bottom:12px}.themetog button{padding:9px 13px;font-size:9px}}
-@media print{.themetog{display:none}}
+@media(max-width:719px){.themetog button{padding:9px 12px;font-size:9px}}
 
 /* ═════════════ 반응형 ═════════════ */
 @media(max-width:1100px){
@@ -784,7 +825,6 @@ body.rest .spot{opacity:0}
 }
 @media (prefers-reduced-motion:reduce){
   *{animation:none!important;transition:none!important}
-  .opening{display:none}
 }
 
   /* ── 전달용 전용 ── */
@@ -794,18 +834,42 @@ body.rest .spot{opacity:0}
 </style>
 </head>
 <body>
-<script>/* 저장된 테마를 첫 페인트 전에 적용 (기본 WHITE) */
-(function(){try{if(localStorage.getItem('muin-theme')==='dark')
-document.documentElement.setAttribute('data-theme','dark');}catch(e){}})();</script>
+<script>/* 저장된 테마 + 진입 게이트를 첫 페인트 전에 적용 (기본 WHITE) */
+(function(){var d=document.documentElement;
+try{if(localStorage.getItem('muin-theme')==='dark')d.setAttribute('data-theme','dark');}catch(e){}
+d.classList.add('gate-on');})();</script>
 
 <div class="grain"></div>
 <div class="spot" id="spot"></div>
 <div class="flash" id="flash"></div>
-<div class="opening"><b>MU:IN</b></div>
 
-<div class="themetog" id="themetog" role="group" aria-label="Theme">
-  <button type="button" data-t="light" class="on">WHITE</button>
-  <button type="button" data-t="dark">BLACK</button>
+<!-- 진입 게이트 — 이 클릭이 소리 재생을 여는 user gesture가 된다 -->
+<div class="gate" id="gate">
+  <div>
+    <div class="glogo">MU<span class="cl">:</span>IN</div>
+    <div class="gsub">T O K Y O</div>
+    <div class="gmsg">
+      <b>音楽とともにご覧ください。</b>
+      クラブの体験を再現したデモです。音があってはじめて完成します。
+      <span class="ko"><b>음악과 함께 봐주세요.</b> 클럽의 경험을 재현한 데모라, 소리가 있어야 완성됩니다.</span>
+    </div>
+    <div class="gnow">
+      <span class="eq"><i></i><i></i><i></i><i></i></span>
+      NOW PLAYING — <b>NUBREED NIGHT</b> · ELLIA × MIXMIX TV
+    </div>
+    <div class="gbtns">
+      <button type="button" class="gp" id="gYes">▶ 音楽と一緒に見る<small>네, 음악과 함께 보기</small></button>
+    </div>
+    <button type="button" class="gskip" id="gNo">音なしで進む &nbsp;/&nbsp; 소리 없이 진행</button>
+  </div>
+</div>
+
+<div class="floatui">
+  <button type="button" class="sndtog" id="sndtog" aria-label="Sound">♪ OFF</button>
+  <div class="themetog" id="themetog" role="group" aria-label="Theme">
+    <button type="button" data-t="light" class="on">WHITE</button>
+    <button type="button" data-t="dark">BLACK</button>
+  </div>
 </div>
 
 <div class="wrap">
@@ -2357,6 +2421,9 @@ $$('#marqTr span').forEach(function(sp){
 });
 
 /* ══════════ MUSIC — 실제 유튜브 재생 (형님 공유 5곡) ══════════ */
+/* 진입 게이트가 호출할 음악 제어 핸들 (아래 MUSIC 블록에서 채워진다) */
+var startMusic = null, setSound = null;
+
 /* 첫 곡이 진입 시 자동 재생된다 — 순서를 바꾸면 자동 재생 곡도 바뀐다 */
 var TRACKS = [
   { id:'3ug0e84EwPA', t:'NUBREED NIGHT',  a:'ELLIA · MIXMIX TV',                      ty:'MIXSET' },
@@ -2422,9 +2489,46 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
     if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if (!playing) play(cur, false); }
   });
 
-  /* ── 진입 즉시 1번 트랙 자동 재생 (무음 시작) ── */
-  mark(0);
-  if (REDUCED) facade(0); else play(0, true);
+  /* ── 재생 시작은 진입 게이트가 호출한다.
+        게이트의 클릭이 user gesture라 그 뒤로는 소리 있는 재생이 허용된다. ── */
+  mark(0); facade(0);
+  startMusic = function(withSound){
+    if (withSound) play(cur, false);        /* 동의했으므로 소리 켜고 재생 */
+    else if (REDUCED) facade(cur);          /* 모션 최소화 설정이면 정지 화면 유지 */
+    else play(cur, true);                   /* 무음 자동 재생 */
+  };
+  setSound = function(on){ play(cur, !on); };
+})();
+
+/* ══════════ 진입 게이트 + 소리 토글 ══════════ */
+(function(){
+  var gate = $('gate'), snd = $('sndtog');
+  function paintSnd(on){
+    if (!snd) return;
+    snd.textContent = on ? '♪ ON' : '♪ OFF';
+    snd.classList.toggle('on', !!on);
+  }
+  function enter(withSound){
+    if (gate){
+      gate.classList.add('out');
+      setTimeout(function(){
+        gate.style.display = 'none';
+        document.documentElement.classList.remove('gate-on');
+      }, REDUCED ? 0 : 700);
+    }
+    if (startMusic) startMusic(withSound);
+    paintSnd(withSound);
+  }
+  if ($('gYes')) $('gYes').addEventListener('click', function(){ enter(true); });
+  if ($('gNo'))  $('gNo').addEventListener('click',  function(){ enter(false); });
+  if (!gate && startMusic) startMusic(false);   /* 게이트가 없으면 무음으로라도 재생 */
+
+  if (snd) snd.addEventListener('click', function(){
+    var on = !snd.classList.contains('on');
+    if (setSound) setSound(on);
+    paintSnd(on);
+  });
+  paintSnd(false);
 })();
 
 /* ══════════ WHITE / BLACK 테마 토글 ══════════ */
