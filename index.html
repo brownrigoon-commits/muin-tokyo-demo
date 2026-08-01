@@ -2566,9 +2566,12 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
       '<div class="scrim"></div><div class="pbtn">▶</div>' +
       '<div class="mi"><div class="t">' + tr.t + '</div><div class="a">' + tr.ty + ' · ' + tr.a + '</div></div>';
   }
-  /* 플레이어에 명령 보내기 (enablejsapi=1 이면 외부 라이브러리 없이 postMessage로 제어 가능).
-     플레이어가 준비되기 전 명령은 그냥 무시되므로, 초반에는 반복해서 보낸다. */
+  /* 플레이어에 명령 보내기 — IFrame API가 붙어 있으면 그 메서드를 쓰고,
+     아직 준비 전이면 postMessage로 내려보낸다(준비 전 명령은 무시되므로 초반엔 반복 호출된다). */
   function cmd(func, args){
+    if (ytPlayer && typeof ytPlayer[func] === 'function'){
+      try { ytPlayer[func].apply(ytPlayer, args || []); return; } catch(e){}
+    }
     var f = stage.querySelector('iframe'); if (!f || !f.contentWindow) return;
     try { f.contentWindow.postMessage(
       JSON.stringify({ event:'command', func:func, args:args || [] }), '*'); } catch(e){}
@@ -2606,37 +2609,57 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
     var tr = TRACKS[i];
     muted = !!mute;
     var wantSound = !muted;
-    var urlMute = (opts.fade && wantSound) ? 1 : (muted ? 1 : 0);
+    var startMuted = (opts.fade && wantSound) ? 1 : (muted ? 1 : 0);
+
+    /* 이전 플레이어를 먼저 정리한 뒤 무대를 비운다 */
+    if (ytPlayer && ytPlayer.destroy){ try { ytPlayer.destroy(); } catch(e){} }
+    ytPlayer = null;
+
     stage.innerHTML =
-      '<iframe id="ytframe" src="https://www.youtube-nocookie.com/embed/' + tr.id +
-      '?autoplay=1&mute=' + urlMute + (opts.start ? '&start=' + opts.start : '') +
-      '&rel=0&modestbranding=1&playsinline=1&enablejsapi=1" title="' + tr.t +
-      '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>' +
+      '<div id="ytmount"></div>' +
       (opts.fade ? '<div class="fadeveil" id="fadeveil"></div>' : '') +
       (muted ? '<button type="button" class="soundon" id="soundon">♪ 音を出す / 소리 켜기</button>' : '');
     playing = true;
     var b = $('soundon');
     if (b) b.addEventListener('click', function(e){ e.stopPropagation(); play(cur, false); });
+
+    mountPlayer(tr, startMuted, opts.start || 0);
     if (opts.fade) fadeIn(opts.fade, wantSound);
-    listenForEnd();          /* 이 곡이 끝나면 다음 곡으로 넘어가도록 등록 */
   }
 
   /* ── 연속 재생 ──────────────────────────────────────────────
      곡이 끝나면 다음 곡으로, 마지막 곡이면 첫 곡으로 돌아가 계속 돈다.
 
-     생 postMessage로 'listening'을 보내는 방식은 두 번째부터 alreadyInitialized만
-     돌아오고 상태 이벤트가 끊겨서 쓸 수 없었다(실측). 공식 IFrame API를 얹어
-     onStateChange = ENDED 를 받는다. API 로딩이 실패해도 재생 자체는 그대로 동작한다. */
-  var ytPlayer = null;
-  function listenForEnd(){
-    if (!window.YT || !window.YT.Player) return;   /* 아직 준비 전이면 onReady에서 다시 건다 */
-    if (ytPlayer && ytPlayer.destroy){ try { ytPlayer.destroy(); } catch(e){} ytPlayer = null; }
-    var el = stage.querySelector('#ytframe');
-    if (!el) return;
+     iframe을 직접 써서 postMessage로 'listening'을 보내는 방식은 두 번째부터
+     alreadyInitialized만 돌아오고 상태 이벤트가 끊겼다. 이미 떠 있는 iframe에
+     YT.Player를 붙이는 방식도 onReady가 오지 않았다(둘 다 실측 확인).
+     그래서 플레이어 자체를 IFrame API가 만들게 한다 — 이래야 ENDED가 확실히 온다.
+     API 로드가 실패하면 재생이 되지 않으므로, 그 경우 표지(파사드)로 되돌린다. */
+  var ytPlayer = null, pendingMount = null;
+
+  function mountPlayer(tr, startMuted, startAt){
+    if (!window.YT || !window.YT.Player){ pendingMount = { tr:tr, m:startMuted, s:startAt }; return; }
+    pendingMount = null;
+    var mount = $('ytmount');
+    if (!mount) return;
     try {
-      ytPlayer = new YT.Player(el, { events: { onStateChange: function(e){
-        if (e && e.data === YT.PlayerState.ENDED && playing) next();
-      } } });
+      ytPlayer = new YT.Player(mount, {
+        host: 'https://www.youtube-nocookie.com',
+        videoId: tr.id,
+        playerVars: {
+          autoplay:1, mute:startMuted, start:startAt,
+          rel:0, modestbranding:1, playsinline:1, origin:location.origin
+        },
+        events: {
+          onReady: function(e){
+            if (startMuted){ try { e.target.mute(); } catch(err){} }
+            try { e.target.playVideo(); } catch(err){}
+          },
+          onStateChange: function(e){
+            if (e.data === YT.PlayerState.ENDED && playing) next();
+          }
+        }
+      });
     } catch(e){}
   }
 
@@ -2647,8 +2670,10 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
     mark(cur);
   }
 
-  /* IFrame API 로드 — 준비되면 이미 떠 있는 플레이어에도 이벤트를 건다 */
-  window.onYouTubeIframeAPIReady = function(){ if (playing) listenForEnd(); };
+  /* IFrame API 로드 — 준비되기 전에 재생 요청이 있었다면 그때 이어서 띄운다 */
+  window.onYouTubeIframeAPIReady = function(){
+    if (pendingMount) mountPlayer(pendingMount.tr, pendingMount.m, pendingMount.s);
+  };
   (function(){
     if (document.querySelector('script[src*="iframe_api"]')) return;
     var s = document.createElement('script');
