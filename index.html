@@ -610,6 +610,10 @@ html.gate-on .gate{display:grid}
 .mstage .fadeveil{position:absolute;inset:0;z-index:4;background:#050505;pointer-events:none;
   opacity:1;transition:opacity 3s linear}
 .mstage .fadeveil.go{opacity:0}
+/* 페이드 아웃 — 긴 곡을 데모용으로 끊을 때. 검정으로 덮으며 소리도 같이 내린다 */
+.mstage .fadeout{position:absolute;inset:0;z-index:5;background:#050505;pointer-events:none;
+  opacity:0;transition:opacity 3.5s linear}
+.mstage .fadeout.on{opacity:1}
 /* 유튜브 하단 컨트롤바·우상단 아이콘을 피해 좌상단에 둔다 */
 .soundon{position:absolute;left:13px;top:13px;z-index:6;font-family:var(--label);font-size:10.5px;
   letter-spacing:.12em;font-weight:600;padding:10px 15px;border-radius:999px;
@@ -2542,9 +2546,12 @@ var startMusic = null, setSound = null;
 var INTRO_START = 40;   /* 시작 초 */
 var INTRO_FADE  = 3000; /* 페이드 인 시간(ms) */
 
-/* 첫 곡이 진입 시 자동 재생된다 — 순서를 바꾸면 자동 재생 곡도 바뀐다 */
+/* 첫 곡이 진입 시 자동 재생된다 — 순서를 바꾸면 자동 재생 곡도 바뀐다.
+   end : 이 지점(초)에서 페이드 아웃하고 다음 곡으로 넘긴다. 없으면 끝까지 재생.
+         1번은 42분짜리 믹스셋이라 데모에서는 2:48(168초)에서 끊는다. */
+var OUTRO_FADE = 3500;   /* 페이드 아웃 시간(ms) */
 var TRACKS = [
-  { id:'3ug0e84EwPA', t:'NUBREED NIGHT',  a:'ELLIA · MIXMIX TV',                      ty:'MIXSET' },
+  { id:'3ug0e84EwPA', t:'NUBREED NIGHT',  a:'ELLIA · MIXMIX TV',                      ty:'MIXSET', end:168 },
   { id:'XEwN3WWID-Y', t:'FLY HIGH',       a:'ALAN SHIRAHAMA, GIO, Arkins, NOTXERIUS', ty:'MV'     },
   { id:'l6FuM7a3wyY', t:'Never Gonna Be', a:'ALAN SHIRAHAMA, ASTER',                  ty:'MV'     },
   { id:'Xcpn_UqObBk', t:'Evil’s Touch',   a:'ELLIA',                                  ty:'LYRIC'  },
@@ -2611,7 +2618,8 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
     var wantSound = !muted;
     var startMuted = (opts.fade && wantSound) ? 1 : (muted ? 1 : 0);
 
-    /* 이전 플레이어를 먼저 정리한 뒤 무대를 비운다 */
+    /* 이전 플레이어와 예약된 페이드 아웃을 먼저 정리한 뒤 무대를 비운다 */
+    clearInterval(outroTimer); outroTimer = null;
     if (ytPlayer && ytPlayer.destroy){ try { ytPlayer.destroy(); } catch(e){} }
     ytPlayer = null;
 
@@ -2635,7 +2643,39 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
      YT.Player를 붙이는 방식도 onReady가 오지 않았다(둘 다 실측 확인).
      그래서 플레이어 자체를 IFrame API가 만들게 한다 — 이래야 ENDED가 확실히 온다.
      API 로드가 실패하면 재생이 되지 않으므로, 그 경우 표지(파사드)로 되돌린다. */
-  var ytPlayer = null, pendingMount = null;
+  var ytPlayer = null, pendingMount = null, outroTimer = null;
+
+  /* 지금 곡에 end(조기 종료 지점)가 있으면 그 지점을 감시하다 페이드 아웃으로 넘긴다.
+     end가 없는 곡은 끝까지 재생되고 ENDED 이벤트로 넘어간다. */
+  function scheduleOutro(){
+    clearInterval(outroTimer); outroTimer = null;
+    var end = TRACKS[cur] && TRACKS[cur].end;
+    if (!end) return;
+    outroTimer = setInterval(function(){
+      if (!playing || !ytPlayer || !ytPlayer.getCurrentTime) return;
+      var t;
+      try { t = ytPlayer.getCurrentTime(); } catch(e){ return; }
+      if (t >= end){ clearInterval(outroTimer); outroTimer = null; fadeOutThenNext(); }
+    }, 250);
+  }
+
+  /* 화면은 검정으로, 소리는 0으로 함께 내린 뒤 다음 곡으로 */
+  function fadeOutThenNext(){
+    var veil = document.createElement('div');
+    veil.className = 'fadeout';
+    veil.style.transitionDuration = (OUTRO_FADE / 1000) + 's';
+    stage.appendChild(veil);
+    setTimeout(function(){ veil.classList.add('on'); }, 30);
+
+    var t0 = Date.now();
+    var iv = setInterval(function(){
+      var p = Math.min(1, (Date.now() - t0) / OUTRO_FADE);
+      cmd('setVolume', [Math.round((1 - p) * 100)]);
+      if (p >= 1) clearInterval(iv);
+    }, 100);
+
+    setTimeout(function(){ clearInterval(iv); next(); }, OUTRO_FADE);
+  }
 
   function mountPlayer(tr, startMuted, startAt){
     if (!window.YT || !window.YT.Player){ pendingMount = { tr:tr, m:startMuted, s:startAt }; return; }
@@ -2653,7 +2693,9 @@ function thumb(id, q){ return 'https://i.ytimg.com/vi/' + id + '/' + (q || 'hqde
         events: {
           onReady: function(e){
             if (startMuted){ try { e.target.mute(); } catch(err){} }
+            else { try { e.target.setVolume(100); } catch(err){} }  /* 앞 곡 페이드로 내려간 볼륨 복구 */
             try { e.target.playVideo(); } catch(err){}
+            scheduleOutro();                                        /* 조기 종료 지점이 있으면 감시 시작 */
           },
           onStateChange: function(e){
             if (e.data === YT.PlayerState.ENDED && playing) next();
