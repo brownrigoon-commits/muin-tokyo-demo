@@ -84,6 +84,26 @@ html[data-theme="dark"] .phone, html[data-theme="dark"] .tablet{
 /* 반전 블록(.inv) 내부의 옅은 선·면 — 배경색이 테마마다 뒤집히므로 따로 잡는다 */
 .inv{ --inv-line:rgba(5,5,5,.16); --inv-soft:rgba(5,5,5,.10); }
 html:not([data-theme="dark"]) .phone .inv{ --inv-line:rgba(250,250,250,.30); --inv-soft:rgba(250,250,250,.16); }
+/* ═════════════ 언어 전환 — 병기 대신 한 언어씩 ═════════════ */
+/* 숨김/표시는 다른 어떤 규칙보다 우선해야 한다.
+   기존 스타일시트에 .howto .g p span{display:block} 같이 더 강한 선택자가 흩어져 있어
+   우선순위 싸움 대신 !important 로 확정한다. */
+.L{display:none !important}
+html[data-lang="ja"] .L-ja,
+html[data-lang="ko"] .L-ko,
+html[data-lang="en"] .L-en,
+html[data-lang="zh"] .L-zh{display:inline !important}
+/* 한국어가 '보조선'이 아니라 본문이 될 때는 본문 크기·색으로 */
+html[data-lang="ko"] .L-ko{font-family:var(--ko);font-size:inherit;color:inherit;margin-top:0;line-height:inherit}
+.L-en{font-family:var(--body)}
+.L-zh{font-family:'Noto Sans SC','Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif}
+.langtog{display:flex;gap:2px;border:1px solid var(--line-hi);border-radius:999px;padding:2px;background:var(--k-0)}
+.langtog button{font-family:var(--label);font-size:9px;letter-spacing:.08em;font-weight:700;
+  padding:6px 9px;border:0;border-radius:999px;background:transparent;color:var(--tx-3);cursor:pointer;
+  transition:background .25s var(--ease),color .25s var(--ease);white-space:nowrap}
+.langtog button.on{background:var(--tx-1);color:var(--k-0)}
+@media(max-width:719px){ .langtog button{font-size:8px;padding:5px 7px} }
+
 html{transition:background-color .45s var(--ease)}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -1123,6 +1143,12 @@ body.rest .spot{opacity:0}
 
 <div class="floatui">
   <button type="button" class="sndtog" id="sndtog" aria-label="Sound">♪ OFF</button>
+  <div class="langtog" id="langtog" role="group" aria-label="Language">
+    <button type="button" data-lang="ja" class="on">日本語</button>
+    <button type="button" data-lang="ko">한국어</button>
+    <button type="button" data-lang="en">EN</button>
+    <button type="button" data-lang="zh">中文</button>
+  </div>
   <div class="themetog" id="themetog" role="group" aria-label="Theme">
     <button type="button" data-t="light" class="on">WHITE</button>
     <button type="button" data-t="dark">BLACK</button>
@@ -3701,6 +3727,316 @@ if (!REDUCED) setInterval(function(){ qs = qs > 0 ? qs - 1 : 30; if ($('qsec')) 
     place();
     setInterval(place, 1200);         /* 레이아웃이 바뀌어도 계속 따라붙는다 */
     window.addEventListener('resize', place);
+  });
+})();
+
+/* ══════════ 언어 전환 (日本語 / 한국어 / EN / 中文) ══════════
+   기존에는 일본어 아래에 한국어를 작게 병기했다. 두 언어가 겹쳐 보여 읽기 어렵고
+   영어·중국어 투자자에게는 쓸모가 없었다. 이제 한 번에 한 언어만 보여준다.
+   사전은 한국어 앞부분을 열쇠로 삼는다 — 문구를 고쳐도 앞부분만 유지하면 계속 맞는다. */
+var I18N = {
+ "음악과 함께 봐주세요. 클럽의 경": {
+  "en": "Please view with sound on. This demo recreates the club experience — it is only complete with audio.",
+  "zh": "请开启声音观看。本演示还原夜店体验，有声音才算完整。"
+ },
+ "이 데모 보는 법 — 아래 4개 화면": {
+  "en": "How to read this demo — the four screens below are working prototypes of the app.",
+  "zh": "如何观看本演示 — 下方四个画面是可实际操作的应用原型。"
+ },
+ "모두 자동 재생됩니다. 조작 없이": {
+  "en": "Tap the red markers in order and the screens respond — they move only when you press.",
+  "zh": "依序点击红色标记，画面即会响应 — 仅在点击时才会变化。",
+  "ja": "赤い枠を順番に押すと画面が動きます。押した分だけ反応します。",
+  "ko": "빨간 표시를 순서대로 누르면 화면이 움직입니다. 누른 만큼만 반응합니다."
+ },
+ "4개 화면은 실시간 연동. 한 화면": {
+  "en": "The four screens are linked in real time. Close a booking on one and the numbers move on the others.",
+  "zh": "四个画面实时联动。在一个画面完成预订，其他画面的数字随之变动。"
+ },
+ "아티스트·음원·시세는 모두 실재": {
+  "en": "Artists, tracks and prices are all based on real data.",
+  "zh": "艺人、音源与价格均以真实资料为依据。"
+ },
+ "오늘 밤의 모든 것이 모이는 입구": {
+  "en": "The entrance to everything tonight — DJ lineup, crowd level, app-only coupons and club info on a single screen.",
+  "zh": "今夜一切的入口 — DJ 阵容、拥挤度、应用专属优惠券与夜店资讯集于一屏。"
+ },
+ "라인업의 ON 배지는 지금 플레이": {
+  "en": "The ON badge marks the DJ playing now — it follows the track playing on screen 02.",
+  "zh": "阵容中的 ON 徽章代表正在演出的 DJ — 与画面 02 的播放曲目联动。"
+ },
+ "VIP 잔여 테이블은 03에서 예약이": {
+  "en": "Remaining VIP tables drop the moment a booking closes on 03, and switch to SOLD OUT when gone.",
+  "zh": "VIP 剩余桌数在画面 03 完成预订的瞬间减少，售罄后显示「完売」。"
+ },
+ "혼잡도는 ○ ◐ ● 3단계. 피크일": {
+  "en": "Crowd level has three stages ○ ◐ ● — it warns in red only at peak.",
+  "zh": "拥挤度分 ○ ◐ ● 三级，仅在高峰时以红色警示。"
+ },
+ "클럽 앱의 핵심. 소속 DJ의 프로": {
+  "en": "The heart of the club app — profiles, socials, releases, mixsets and tour dates in one place.",
+  "zh": "夜店应用的核心 — 将旗下 DJ 的简介、社群、发行音源、混音集与演出日程整合于一处。"
+ },
+ "음원 카드를 탭하면 앱 안에서 바": {
+  "en": "Tap a track card and the in-app player slides up.",
+  "zh": "点击音源卡片，应用内播放器随即弹出。"
+ },
+ "DJ REQUEST는 오늘 밤 틀 곡의 팬": {
+  "en": "DJ REQUEST is a fan vote for tonight's setlist — the ranking flips on the spot.",
+  "zh": "DJ REQUEST 是今晚曲目的粉丝投票，排名会当场翻转。"
+ },
+ "표시된 DJ·음원·수상 이력은 모두": {
+  "en": "The DJs, tracks and awards shown are all real (9 NUBREED artists).",
+  "zh": "所示 DJ、音源与获奖纪录均属实（NUBREED 旗下 9 组）。"
+ },
+ "여기 놓인 음원은 MUSIC 섹션에서": {
+  "en": "The tracks listed here actually play in the MUSIC section.",
+  "zh": "此处列出的音源可在 MUSIC 区块实际播放。"
+ },
+ "수익의 중심. 좌석 맵에서 테이블": {
+  "en": "The revenue core — the full flow from picking a table on the map to paying with the token.",
+  "zh": "营收核心 — 完整重现从座位图选桌到以代币结账的全流程。"
+ },
+ "존 A / B / S를 탭할 때마다 사진": {
+  "en": "Tap zone A / B / S and the photo, capacity, included bottles and price all change.",
+  "zh": "点击 A / B / S 区，照片、人数、含瓶与价格随之切换。"
+ },
+ "DMCC를 고르면 ¥180,000 → 207,0": {
+  "en": "Choose DMCC and ¥180,000 → 207,000 DMCC (+15%) is calculated on the spot.",
+  "zh": "选择 DMCC，即时换算 ¥180,000 → 207,000 DMCC（+15%）。"
+ },
+ "결제가 끝나면 01의 잔여 테이블과": {
+  "en": "When payment completes, remaining tables on 01 and revenue in OPERATOR VIEW move together.",
+  "zh": "结账完成后，画面 01 的剩余桌数与 OPERATOR VIEW 的营收同时变动。"
+ },
+ "재방문을 만드는 장치. QR 입장,": {
+  "en": "The retention engine — QR entry, visit stamps, and matching that fills empty seats.",
+  "zh": "促成回访的机制 — QR 入场、到店集章，以及填满空位的拼桌配对。"
+ },
+ "카드 뒷면은 실제로 읽히는 QR입니": {
+  "en": "The back of the card is a real, scannable QR — point your phone at it and this demo opens.",
+  "zh": "卡片背面是可实际扫描的 QR — 用手机扫描即可打开本演示。"
+ },
+ "스탬프는 5 / 10 / 20회에 혜택이": {
+  "en": "Stamps unlock rewards at 5 / 10 / 20 visits — visit frequency itself is designed.",
+  "zh": "集章于第 5 / 10 / 20 次解锁奖励 — 来店频率本身即是设计。"
+ },
+ "TABLE JOIN은 더치페이로 테이블을": {
+  "en": "TABLE JOIN fills a table by splitting the bill — the more people, the less each pays.",
+  "zh": "TABLE JOIN 以分摊方式填满桌位 — 人数越多，人均越低。"
+ },
+ "서로 좋아요 — 지금 같은 매장 안": {
+  "en": "You both liked each other — and you're in the same venue right now.",
+  "zh": "双方互相喜欢 — 此刻就在同一家店内。"
+ },
+ "↺ 되돌리기 · ✕ 패스 · ♥ 좋아요": {
+  "en": "↺ Undo · ✕ Pass · ♥ Like",
+  "zh": "↺ 撤回 · ✕ 跳过 · ♥ 喜欢"
+ },
+ "만남이 그대로 테이블 매출이 된다": {
+  "en": "A match turns straight into table revenue.",
+  "zh": "一次配对，直接转化为桌位营收。"
+ },
+ "그날 밤 같은 매장 안에 있는 사람": {
+  "en": "Only people inside the same venue that night can connect. A match becomes a shared table, and that table becomes revenue.",
+  "zh": "仅限当晚在同一家店内的人互相连结。相遇转为拼桌，拼桌转为桌位营收。"
+ },
+ "입장 QR로 체크인한 사람만 후보에": {
+  "en": "Only guests checked in with the entry QR appear — nobody outside the venue or from another night.",
+  "zh": "仅显示以入场 QR 完成签到者 — 店外或其他日期的人不会出现。"
+ },
+ "닉네임·나이·언어·좋아하는 장르": {
+  "en": "Shows nickname, age, languages, favourite genres and the zone they are in right now.",
+  "zh": "显示昵称、年龄、语言、偏好曲风，以及目前所在区域。"
+ },
+ "✕ / ♥로 고르고 서로 좋아요일 때": {
+  "en": "Choose with ✕ / ♥ — a match happens only when both like. No contact details are exchanged.",
+  "zh": "以 ✕ / ♥ 选择，双方互相喜欢才配对 — 不交换联络方式。"
+ },
+ "매칭되면 앱 내 채팅, 그대로 테이": {
+  "en": "After a match, chat inside the app and invite them to your table → TABLE JOIN on 04.",
+  "zh": "配对后于应用内聊天，并可直接邀请至桌位 → 转往画面 04 的 TABLE JOIN。"
+ },
+ "퇴장 후 24시간이면 대화 자동 종료": {
+  "en": "Chats close automatically 24 hours after check-out — limiting it to that night only is the safeguard.",
+  "zh": "离店 24 小时后对话自动结束 — 限定「仅限当晚」即是安全机制。"
+ },
+ "본인확인·신고/차단·스크린샷 알": {
+  "en": "Identity verification, report / block and screenshot alerts are standard.",
+  "zh": "标配实名验证、检举／封锁与截图通知。"
+ },
+ "매칭은 일본에서 이미 일상입니다.": {
+  "en": "Matching is already everyday life in Japan. But existing apps stop at meeting and never reach the venue's revenue. MU:IN narrows it to that night, this venue — connecting a match straight to a shared table, then bottles. Footfall, dwell time and spend per head rise together: a design only a club can build.",
+  "zh": "配对在日本早已是日常。但既有应用止于「见面」，无法转化为店内营收。MU:IN 将范围收敛至「当晚·同一家店」，让相遇直接连往拼桌、桌位与酒水。集客、停留时间与客单价同时提升 — 这是只有夜店才做得出的设计。"
+ },
+ "02 화면에서 소개한 음원을 여기서": {
+  "en": "The tracks shown on screen 02 actually play here. Pick one from the list on the right — every one is a real release by a NUBREED artist.",
+  "zh": "画面 02 介绍的音源可在此实际播放。请从右侧清单选曲 — 全部为 NUBREED 旗下艺人的实际发行作品。"
+ },
+ "※ 재생에는 인터넷 연결이 필요합니": {
+  "en": "* Playback requires an internet connection (YouTube embed).",
+  "zh": "※ 播放需连接网络（YouTube 嵌入）。"
+ },
+ "05 · 운영 콘솔 — 클럽이 보는 관": {
+  "en": "05 · OPS CONSOLE — the club's own view. Everything happening on the four screens above lands here: entry scans, table occupancy, today's revenue and the approval queue, live for the floor manager. This is not an app — it is the OS that runs the club.",
+  "zh": "05 · 运营控制台 — 夜店端的管理画面。上方四个画面发生的一切都汇集于此：入场扫描数、桌位使用、当日营收与待审核队列，楼面经理即时掌握。这不是「应用」，而是驱动夜店的 OS。"
+ },
+ "보유량이 곧 세계의 플로어로 가는": {
+  "en": "What you hold becomes your pass to floors worldwide.",
+  "zh": "持有量，即是通往世界舞池的通行证。"
+ },
+ "보유량으로 등급이 결정된다 — 나": {
+  "en": "Holdings decide your tier — the Amex Black of nightlife.",
+  "zh": "以持有量决定等级 — 夜生活版的 Amex Black。"
+ },
+ "토큰 게이트 게스트리스트(전 세계": {
+  "en": "Token-gated guestlists worldwide · free or discounted entry · skip-the-line VIP access · the token is your digital membership card · large holders get invite-only industry events",
+  "zh": "全球代币门禁宾客名单 · 免费／折扣入场 · 免排队 VIP 通道 · 代币即数字会员证 · 大额持有者可参加邀请制业界活动"
+ },
+ "전 세계 클럽·페스티벌 테이블 예": {
+  "en": "Table reservations at clubs and festivals worldwide · table credits that accrue on the token and convert into tables or bottles · dedicated concierge",
+  "zh": "全球夜店与音乐节桌位预订 · 桌位额度（累积于代币，可兑换桌位或酒水）· 专属礼宾服务"
+ },
+ "헤드라이너 미트&그리트 · 백스테": {
+  "en": "Meet &amp; greet with headliners · backstage and green room · soundcheck access · hand-signed merch",
+  "zh": "与压轴艺人见面会 · 后台／休息室 · 试音观摩 · 亲笔签名周边"
+ },
+ "4등급 · 참석 증명 배지(POAP) 온": {
+  "en": "Four tiers · proof-of-attendance badges recorded on-chain · holder-only parties and pop-ups · annual summit",
+  "zh": "四个等级 · 出席证明徽章（POAP）链上纪录 · 持有者专属派对与快闪 · 年度峰会"
+ },
+ "페스티벌 여행 패키지(항공·호텔·": {
+  "en": "Festival travel packages (flights, hotel, transfers, AAA access) · rave trips with local partners · partner hotel discounts · nightlife concierge in every city",
+  "zh": "音乐节旅游套装（机票·酒店·接送·AAA 通行）· 在地伙伴筹办的电音旅程 · 合作酒店折扣 · 各城市夜生活礼宾"
+ },
+ "400개 이상의 세계 톱 이벤트와 이": {
+  "en": "Already connected to 400+ world-class events · 15% bonus on top-up · usable for entry, tables, bottles and merch at MU:IN TOKYO",
+  "zh": "已串接 400 场以上世界顶级活动 · 充值赠送 15% · 可用于 MU:IN TOKYO 的入场、桌位、酒水与周边"
+ },
+ "이 중 10개 모듈은 위 데모에서 실": {
+  "en": "10 of these modules are live in the demo above · ¥ marks a revenue point",
+  "zh": "其中 10 个模块已在上方演示中实际运作 · ¥ 表示营收点"
+ },
+ "오늘 밤 배너·라인업·VIP 프로모": {
+  "en": "Tonight's banner, lineup, VIP promo and app-only coupons",
+  "zh": "今夜横幅、阵容、VIP 优惠与应用专属券"
+ },
+ "QR 입장 −10%·회원 전용 이벤트·": {
+  "en": "−10% QR entry · member-only events · birthday coupon · points",
+  "zh": "QR 入场 −10% · 会员专属活动 · 生日券 · 积分"
+ },
+ "소개·위치(지도)·영업시간·드레": {
+  "en": "About · map · opening hours · dress code · facilities · gallery",
+  "zh": "简介 · 位置（地图）· 营业时间 · 着装要求 · 设施 · 相册"
+ },
+ "DJ별 프로필·SNS·플레이 스타일·": {
+  "en": "Per-DJ profile · socials · play style · tour dates · key videos",
+  "zh": "各 DJ 简介 · 社群 · 演出风格 · 日程 · 代表影片"
+ },
+ "발매 음원·믹스셋 — 스포티파이/": {
+  "en": "Releases and mixsets — linked to Spotify / Apple / Beatport / SoundCloud / YouTube",
+  "zh": "发行音源与混音集 — 串接 Spotify／Apple／Beatport／SoundCloud／YouTube"
+ },
+ "좌석별 사진·수용 인원·가격·보": {
+  "en": "Photo, capacity, price and bottles per seat, with live booking",
+  "zh": "各座位照片、容纳人数、价格、酒水与即时预订"
+ },
+ "디스커버피드 패스포트 연동 토큰": {
+  "en": "Token linked to DiscoverFeed Passport — +15% top-up bonus, tier by holdings",
+  "zh": "串接 DiscoverFeed Passport 的代币 — 充值 +15%，依持有量决定等级"
+ },
+ "매장 한정 매칭·채팅·테이블 합석": {
+  "en": "Venue-only matching · chat · table sharing (split the bill)",
+  "zh": "限店内配对 · 聊天 · 拼桌（分摊费用）"
+ },
+ "주간 — 클럽 뉴스·DJ 뉴스·EDM·": {
+  "en": "Weekly — club news · DJ news · EDM · festivals · playlists",
+  "zh": "每周 — 夜店快讯 · DJ 动态 · EDM · 音乐节 · 歌单"
+ },
+ "게스트 DJ·파티·스페셜 이벤트를": {
+  "en": "Guest DJs, parties and special events on a monthly calendar",
+  "zh": "以月历呈现客座 DJ、派对与特别活动"
+ },
+ "티셔츠·모자·굿즈·보틀 선주문": {
+  "en": "T-shirts · caps · merch · bottle pre-orders",
+  "zh": "T恤 · 帽款 · 周边 · 酒水预购"
+ },
+ "친구 초대 QR로 입장 — 초대 경유": {
+  "en": "Entry by friend-invite QR — visits via invitation are tracked",
+  "zh": "以好友邀请 QR 入场 — 统计经由邀请到店的人次"
+ },
+ "↑ 이 4가지도 위 데모에서 동작합니": {
+  "en": "↑ These four also work in the demo above",
+  "zh": "↑ 这四项同样已在上方演示中运作"
+ },
+ "본 데모는 NUBREED의 비공식 컨셉": {
+  "en": "This demo is an unofficial concept proposal by NUBREED. MU:IN TOKYO is scheduled to open in Shinjuku in 2027 under a licence agreement between Humax Entertainment and MU:IN GROUP.",
+  "zh": "本演示为 NUBREED 提出的非官方概念提案。MU:IN TOKYO 依 Humax Entertainment × MU:IN GROUP 授权协议，预计 2027 年于新宿开幕。"
+ }
+};
+var I18N_TRY = {
+ "DJ 전환 → 곡 재생 → 투표": {
+  "en": "Tap the red markers in order — switch DJ → play a track → vote",
+  "zh": "请依序点击红色标记 — 切换 DJ → 播放曲目 → 投票"
+ },
+ "좌석 → 예약 → 결제수단 → 결제": {
+  "en": "Tap the red markers in order — seat → reserve → payment method → pay",
+  "zh": "请依序点击红色标记 — 选座 → 预订 → 付款方式 → 结账"
+ },
+ "카드 → 스탬프 → 합석": {
+  "en": "Tap the red markers in order — card → stamp → join a table",
+  "zh": "请依序点击红色标记 — 会员卡 → 集章 → 拼桌"
+ },
+ "누른 만큼만 화면이 움직입니다": {
+  "en": "Tap the red markers in order — the screen moves only when you press",
+  "zh": "请依序点击红色标记 — 画面仅在点击时才会变化"
+ }
+};
+
+(function(){
+  function norm(t){ return (t || '').replace(/\s+/g, ' ').trim(); }
+
+  document.querySelectorAll('.ko').forEach(function(koEl){
+    var p = koEl.parentNode; if (!p) return;
+
+    /* .ko 앞에 있던 것들이 일본어 원문이다 — 통째로 묶는다 */
+    var ja = document.createElement('span');
+    ja.className = 'L L-ja';
+    while (p.firstChild && p.firstChild !== koEl) ja.appendChild(p.firstChild);
+    p.insertBefore(ja, koEl);
+    koEl.className = 'ko L L-ko';
+
+    var ko = norm(koEl.textContent);
+    var d = I18N[ko.slice(0, 16)] || null;
+    if (!d){ for (var k in I18N){ if (ko.indexOf(k) === 0){ d = I18N[k]; break; } } }
+    if (!d){ for (var k2 in I18N_TRY){ if (ko.indexOf(k2) >= 0){ d = I18N_TRY[k2]; break; } } }
+    if (!d) return;
+
+    if (d.ja) ja.innerHTML = d.ja;
+    if (d.ko) koEl.innerHTML = d.ko;
+    ['en','zh'].forEach(function(L){
+      if (!d[L]) return;
+      var e = document.createElement('span');
+      e.className = 'L L-' + L;
+      e.innerHTML = d[L];
+      p.insertBefore(e, koEl.nextSibling);
+    });
+  });
+
+  /* 버튼 */
+  var tog = document.getElementById('langtog');
+  function apply(l){
+    document.documentElement.setAttribute('data-lang', l);
+    if (tog) [].slice.call(tog.querySelectorAll('button')).forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-lang') === l);
+    });
+    try { localStorage.setItem('muin-lang', l); } catch(e){}
+  }
+  var saved = 'ja';
+  try { saved = localStorage.getItem('muin-lang') || 'ja'; } catch(e){}
+  apply(saved);
+  if (tog) [].slice.call(tog.querySelectorAll('button')).forEach(function(b){
+    b.addEventListener('click', function(){ apply(b.getAttribute('data-lang')); });
   });
 })();
 
