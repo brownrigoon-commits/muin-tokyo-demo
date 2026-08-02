@@ -1379,7 +1379,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>02</b><span>DJ — ARTIST PAGE</span></div>
-      <div class="tryit">● 赤い枠を順番に押してみてください — DJ REQUEST の曲を押すと票が入り、順位が入れ替わります<span class="ko">빨간 표시를 순서대로 누르세요 — DJ REQUEST의 곡을 누르면 표가 들어가고 순위가 바뀝니다</span></div>
+      <div class="tryit">● 赤い枠を順番に押してください — DJ切替 → 曲を再生 → 投票<span class="ko">빨간 표시를 순서대로 누르세요 — DJ 전환 → 곡 재생 → 투표</span></div>
       <div class="ds">クラブアプリの核。所属DJのプロフィール・SNS・発売音源・ミックスセット・公演日程をひとつに束ねます。<span class="ko">클럽 앱의 핵심. 소속 DJ의 프로필·SNS·발매 음원·믹스셋·공연 일정을 하나로 묶습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1465,7 +1465,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>03</b><span>VIP TABLE × DMCC（ダグコイン）</span></div>
-      <div class="tryit">● 赤い枠を順番に押してみてください — 座席 → RESERVE → 決済方法 → PAY まで実際に押せます<span class="ko">빨간 표시를 순서대로 누르세요 — 좌석 → RESERVE → 결제수단 → PAY까지 직접 눌러 보세요</span></div>
+      <div class="tryit">● 赤い枠を順番に押してください — 座席 → RESERVE → 決済方法 → PAY<span class="ko">빨간 표시를 순서대로 누르세요 — 좌석 → 예약 → 결제수단 → 결제</span></div>
       <div class="ds">収益の中心。座席マップから卓を選び、コインで決済するまでの全工程を通しで再現しています。<span class="ko">수익의 중심. 좌석 맵에서 테이블을 고르고 코인으로 결제하기까지 전 과정을 재현했습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1555,7 +1555,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>04</b><span>MEMBERSHIP × COMMUNITY</span></div>
-      <div class="tryit">● 赤い枠を順番に押してみてください — スタンプの列を押すと1個ずつ貯まります<span class="ko">빨간 표시를 순서대로 누르세요 — 스탬프 줄을 누르면 1개씩 쌓입니다</span></div>
+      <div class="tryit">● 赤い枠を順番に押してください — カード → スタンプ → 相席<span class="ko">빨간 표시를 순서대로 누르세요 — 카드 → 스탬프 → 합석</span></div>
       <div class="ds">再来店をつくる仕組み。QR入場、来店スタンプ、そして空席を埋める相席マッチングまで。<span class="ko">재방문을 만드는 장치. QR 입장, 방문 스탬프, 그리고 빈자리를 채우는 합석 매칭까지.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1638,7 +1638,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>05</b><span>MATCH — 店内限定マッチング</span></div>
-      <div class="tryit">● 赤い枠を順番に押してみてください — 全機能を体験できます<span class="ko">빨간 표시를 순서대로 누르면 전 기능을 체험할 수 있습니다</span></div>
+      <div class="tryit">● 赤い枠を順番に押してください — 押した分だけ画面が動きます<span class="ko">빨간 표시를 순서대로 누르세요 — 누른 만큼만 화면이 움직입니다</span></div>
       <div class="ds">その夜、同じ店内にいる人だけがつながる。出会いがテーブルの相席に変わり、そのまま卓売上になります。<span class="ko">그날 밤 같은 매장 안에 있는 사람끼리만 연결됩니다. 만남이 합석으로, 합석이 테이블 매출로 이어집니다.</span></div>
       <div class="wl">動作の流れ / 동작 방식</div>
       <ul>
@@ -2952,7 +2952,7 @@ $$('#marqTr span').forEach(function(sp){
     setTimeout(function(){ if (!manual) reset(); }, 7400);
   }
   repool();
-  if (!REDUCED){ cycle(); auto = setInterval(cycle, 9200); }
+  manual = true;   /* 자동 시연 없음 — 누를 때만 움직인다 */
 })();
 
 /* ══════════ MUSIC — 실제 유튜브 재생 (형님 공유 5곡) ══════════ */
@@ -3586,13 +3586,17 @@ if (!REDUCED) setInterval(function(){ qs = qs > 0 ? qs - 1 : 30; if ($('qsec')) 
       if (!skipHidden()){ ring.style.display = 'none'; return; }
       var t = target();
       var hr = host.getBoundingClientRect(), tr = t.getBoundingClientRect();
+      /* 폰은 큰 화면에서 --ps 배율로 확대된다. 화면 좌표를 그대로 쓰면 배율만큼 어긋나므로
+         실제 요소 폭과 비교해 배율을 구하고 나눠서 되돌린다. */
+      var sc = (host.offsetWidth && hr.width) ? (hr.width / host.offsetWidth) : 1;
+      if (!sc || !isFinite(sc)) sc = 1;
       ring.style.display = 'block';
-      ring.style.left   = (tr.left - hr.left - 4) + 'px';
-      ring.style.top    = (tr.top  - hr.top  - 4) + 'px';
-      ring.style.width  = (tr.width  + 8) + 'px';
-      ring.style.height = (tr.height + 8) + 'px';
+      ring.style.left   = ((tr.left - hr.left) / sc - 4) + 'px';
+      ring.style.top    = ((tr.top  - hr.top)  / sc - 4) + 'px';
+      ring.style.width  = (tr.width  / sc + 8) + 'px';
+      ring.style.height = (tr.height / sc + 8) + 'px';
       /* 위쪽에 붙으면 라벨을 아래로 내려 잘리지 않게 */
-      ring.classList.toggle('low', (tr.top - hr.top) < 40);
+      ring.classList.toggle('low', ((tr.top - hr.top) / sc) < 40);
       ring.querySelector('b').textContent = tour.steps[ix][1];
     }
 
@@ -3609,19 +3613,16 @@ if (!REDUCED) setInterval(function(){ qs = qs > 0 ? qs - 1 : 30; if ($('qsec')) 
     }, true);
 
     place();
-    setInterval(place, 700);          /* 레이아웃이 바뀌어도 계속 따라붙는다 */
+    setInterval(place, 1200);         /* 레이아웃이 바뀌어도 계속 따라붙는다 */
     window.addEventListener('resize', place);
   });
 })();
 
 /* ══════════ 루프 기동 (위상 스태거) ══════════ */
-if (!REDUCED){
-  setTimeout(function(){ p2Loop(); LOOPS.p2 = setInterval(p2Loop, 10500); }, 1500);
-  setTimeout(function(){ p3Loop(); LOOPS.p3 = setInterval(p3Loop, 11500); }, 3000);
-  setTimeout(function(){ p4Loop(); LOOPS.p4 = setInterval(p4Loop, 9500);  }, 4500);
-} else {
-  selectZone(ZONES[0]);
-}
+/* 화면은 누를 때만 움직인다.
+   자동으로 계속 움직이면 가이드 링(빨간 표시)이 따라다니느라 어디를 눌러야 할지 알 수 없다.
+   카운트다운·LIVE 표시·이퀄라이저 같이 자리를 바꾸지 않는 연출은 그대로 살아 있다. */
+MANUAL.p2 = true; MANUAL.p3 = true; MANUAL.p4 = true;
 selectZone(ZONES[0]);
 })();
 </script>
