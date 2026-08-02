@@ -722,6 +722,18 @@ html.gate-on .gate{display:grid}
   font-family:var(--label);font-size:9px;letter-spacing:.14em;font-weight:700;text-align:center}
 .tryit .ko{font-size:9.5px;margin-top:3px;opacity:.7;letter-spacing:0}
 /* 조작 가능한 요소 피드백 */
+.cty,.lu,.coupon,.crowd,.roster .r,.rl,.mcard,.join .btn{cursor:pointer}
+.lu{transition:opacity .25s var(--ease),transform .25s var(--ease)}
+.lu:hover{transform:translateY(-2px)}
+.roster .r{transition:transform .2s var(--ease)}
+.roster .r:hover{transform:translateY(-2px)}
+.rl{transition:transform .2s var(--ease)}
+.rl:hover{transform:translateY(-2px)}
+.coupon.got{opacity:.55}
+.coupon .gotmark{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--label);
+  font-size:11px;letter-spacing:.2em;font-weight:700;background:rgba(5,5,5,.55);color:#FAFAFA;border-radius:16px}
+.crowd.flash{animation:popin .4s var(--ease)}
+.cty:hover{border-color:var(--tx-1);color:var(--tx-1)}
 .zn{cursor:pointer;transition:border-color .2s var(--ease),background .2s var(--ease)}
 .zn:hover{border-color:var(--tx-1)}
 .vt .v{transition:background .3s var(--ease);border-radius:6px}
@@ -741,7 +753,34 @@ html.gate-on .gate{display:grid}
 .mhead .lg{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:15px;letter-spacing:.02em}
 .mhead .tn{font-family:var(--label);font-size:8px;letter-spacing:.14em;color:var(--tx-3);
   border:1px solid var(--line);border-radius:999px;padding:3px 8px}
-.deck{position:relative;margin:0 16px;height:236px;flex:none}
+.mfilt{display:flex;gap:5px;padding:0 16px 9px;flex:none;overflow:hidden}
+.fc{font-family:var(--label);font-size:7.5px;letter-spacing:.1em;padding:5px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--tx-3);cursor:pointer;white-space:nowrap;transition:all .2s var(--ease)}
+.fc:hover{border-color:var(--tx-2);color:var(--tx-2)}
+.fc.on{background:var(--shiro);color:var(--shiro-t);border-color:var(--shiro);font-weight:700}
+.deck{position:relative;margin:0 16px;height:208px;flex:none}
+.dots3{position:absolute;top:8px;left:50%;transform:translateX(-50%);display:flex;gap:3px;z-index:3}
+.dots3 i{width:20px;height:2px;border-radius:2px;background:rgba(250,250,250,.32)}
+.dots3 i.on{background:#FAFAFA}
+.pcard .bio{font-family:var(--jp);font-size:9.5px;color:#D6D6D6;margin-top:5px}
+.pcard .cmn{font-family:var(--label);font-size:7px;letter-spacing:.1em;color:#FAFAFA;margin-top:7px;
+  background:rgba(250,250,250,.16);border-radius:999px;padding:4px 8px;display:inline-block}
+.acts .ab.sm{width:38px;height:38px;font-size:15px;align-self:center}
+.mstat .mrow{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid var(--line)}
+.avs2{display:flex;flex:1}
+.avs2 i{width:17px;height:17px;border-radius:50%;border:1.5px solid var(--k-1);margin-left:-5px}
+.avs2 i:first-child{margin-left:0}
+.mchat .cl{display:flex;justify-content:space-between;align-items:center}
+.mchat .cto{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:11px;color:var(--tx-1);letter-spacing:0}
+.clog{max-height:74px;overflow:hidden;display:flex;flex-direction:column}
+.cin{display:flex;gap:5px;margin-top:8px}
+.cin input{flex:1;height:26px;border-radius:99px;border:1px solid var(--line-hi);background:var(--k-2);
+  color:var(--tx-1);font-family:var(--jp);font-size:9.5px;padding:0 10px;outline:none}
+.cin input:focus{border-color:var(--tx-2)}
+.cin button{height:26px;padding:0 11px;border-radius:99px;border:0;background:var(--shiro);color:var(--shiro-t);
+  font-family:var(--label);font-size:8px;letter-spacing:.1em;font-weight:700;cursor:pointer}
+.inv2{cursor:pointer}
+.inv2.done{background:var(--k-3);color:var(--tx-3)}
 .pcard{position:absolute;inset:0;border-radius:18px;overflow:hidden;border:1px solid var(--line-hi);
   background:var(--k-2);transition:transform .45s var(--ease),opacity .45s var(--ease)}
 .pcard.back{transform:scale(.94) translateY(9px);opacity:.5}
@@ -1317,6 +1356,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>02</b><span>DJ — ARTIST PAGE</span></div>
+      <div class="tryit">▶ DJ REQUEST の曲を押すと票が入り、順位が入れ替わります<span class="ko">DJ REQUEST의 곡을 누르면 표가 들어가고 순위가 바뀝니다</span></div>
       <div class="ds">クラブアプリの核。所属DJのプロフィール・SNS・発売音源・ミックスセット・公演日程をひとつに束ねます。<span class="ko">클럽 앱의 핵심. 소속 DJ의 프로필·SNS·발매 음원·믹스셋·공연 일정을 하나로 묶습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1325,7 +1365,6 @@ body.rest .spot{opacity:0}
         <li>表示中のDJ・楽曲・受賞歴は<b>すべて実在</b>のものです（NUBREED所属9組）<span class="ko">표시된 DJ·음원·수상 이력은 모두 <b>실재</b>합니다 (뉴브리드 소속 9팀)</span></li>
         <li>ここに並ぶ音源は <b>MUSIC</b> セクションで実際に再生できます<span class="ko">여기 놓인 음원은 MUSIC 섹션에서 실제로 재생됩니다</span></li>
       </ul>
-      <div class="tryit">▶ DJ REQUEST の曲を押すと票が入り、順位が入れ替わります<span class="ko">DJ REQUEST의 곡을 누르면 표가 들어가고 순위가 바뀝니다</span></div>
     </div>
     </div>
 
@@ -1403,6 +1442,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>03</b><span>VIP TABLE × DMCC（ダグコイン）</span></div>
+      <div class="tryit">▶ 座席 → RESERVE → 決済方法 → PAY まで実際に押せます<span class="ko">좌석 → RESERVE → 결제수단 → PAY까지 직접 눌러 보세요</span></div>
       <div class="ds">収益の中心。座席マップから卓を選び、コインで決済するまでの全工程を通しで再現しています。<span class="ko">수익의 중심. 좌석 맵에서 테이블을 고르고 코인으로 결제하기까지 전 과정을 재현했습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1410,7 +1450,6 @@ body.rest .spot{opacity:0}
         <li><b>DMCC</b> を選ぶと ¥180,000 → <b>207,000 DMCC（+15%）</b> がその場で計算されます<span class="ko">DMCC를 고르면 ¥180,000 → <b>207,000 DMCC (+15%)</b>가 즉석에서 계산됩니다</span></li>
         <li>決済が完了すると <em>01</em> の残り卓数と <b>OPERATOR VIEW</b> の売上が同時に動きます<span class="ko">결제가 끝나면 01의 잔여 테이블과 OPERATOR VIEW의 매출이 동시에 움직입니다</span></li>
       </ul>
-      <div class="tryit">▶ 座席 → RESERVE → 決済方法 → PAY まで実際に押せます<span class="ko">좌석 → RESERVE → 결제수단 → PAY까지 직접 눌러 보세요</span></div>
     </div>
     </div>
 
@@ -1469,7 +1508,7 @@ body.rest .spot{opacity:0}
               <div class="party">
                 <span class="avs" id="joinAvs"><i></i><i></i><i></i><i></i></span>
                 <span class="cnt"><span id="joinCnt">4</span><u>/8</u></span>
-                <span class="pp">¥<span id="joinPP">22,500</span><span style="font-size:8px;opacity:.5">/人</span></span>
+                <span class="pp">¥<span id="joinPP">45,000</span><span style="font-size:8px;opacity:.5">/人</span></span>
               </div>
               <div class="btn" id="joinBtn">JOIN</div>
               <div class="chat">
@@ -1493,6 +1532,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>04</b><span>MEMBERSHIP × COMMUNITY</span></div>
+      <div class="tryit">▶ スタンプの列を押すと1個ずつ貯まります<span class="ko">스탬프 줄을 누르면 1개씩 쌓입니다</span></div>
       <div class="ds">再来店をつくる仕組み。QR入場、来店スタンプ、そして空席を埋める相席マッチングまで。<span class="ko">재방문을 만드는 장치. QR 입장, 방문 스탬프, 그리고 빈자리를 채우는 합석 매칭까지.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1500,7 +1540,6 @@ body.rest .spot{opacity:0}
         <li>スタンプは <b>5 / 10 / 20回</b> で特典が解放。来店頻度そのものが設計されています<span class="ko">스탬프는 <b>5 / 10 / 20회</b>에 혜택이 열립니다. 방문 빈도 자체를 설계했습니다</span></li>
         <li><b>TABLE JOIN</b> は割り勘で卓を埋める機能。人数が増えるほど1人あたりが下がります<span class="ko">TABLE JOIN은 더치페이로 테이블을 채우는 기능. 인원이 늘수록 1인당 금액이 내려갑니다</span></li>
       </ul>
-      <div class="tryit">▶ スタンプの列を押すと1個ずつ貯まります<span class="ko">스탬프 줄을 누르면 1개씩 쌓입니다</span></div>
     </div>
     </div>
 
@@ -1511,24 +1550,27 @@ body.rest .spot{opacity:0}
         <div class="statusbar"><span class="clk">23:41</span><span>MATCH</span></div>
         <div class="mhead">
           <span class="lg">MATCH</span>
-          <span class="tn">今夜 店内 138人</span>
+          <span class="tn">今夜 店内 <b id="mCount">138</b>人</span>
+        </div>
+
+        <div class="mfilt" id="mfilt">
+          <span class="fc on" data-z="ALL">ALL</span><span class="fc" data-z="FLOOR">FLOOR</span>
+          <span class="fc" data-z="A">A</span><span class="fc" data-z="B">B</span><span class="fc" data-z="S">S TABLE</span>
         </div>
 
         <div class="deck" id="deck">
-          <div class="pcard back" id="pcB">
-            <div class="ph3 mp2"></div><div class="scr2"></div>
-            <div class="pbody"><div class="nm2">RIN</div></div>
-          </div>
+          <div class="pcard back" id="pcB"><div class="ph3 mp2"></div><div class="scr2"></div></div>
           <div class="pcard" id="pcA">
             <div class="ph3 mp1"></div><div class="scr2"></div>
+            <span class="dots3" id="pcDots"><i class="on"></i><i></i><i></i></span>
             <span class="here"><i></i>同じフロア</span>
             <span class="pin2" id="pcZone">B ZONE</span>
             <div class="pbody">
               <div class="nm2" id="pcName">MIKA</div>
               <div class="sub2" id="pcSub">26 · 東京 · JP / EN</div>
-              <div class="tags" id="pcTags">
-                <span>HOUSE</span><span>TECHNO</span><span>初来店</span>
-              </div>
+              <div class="bio" id="pcBio">今日はTECHNOだけ踊りたい</div>
+              <div class="tags" id="pcTags"><span>HOUSE</span><span>TECHNO</span></div>
+              <div class="cmn" id="pcCommon">◆ 共通 — ALAN SHIRAHAMA をフォロー</div>
             </div>
           </div>
           <div class="matched" id="matched">
@@ -1541,22 +1583,26 @@ body.rest .spot{opacity:0}
         </div>
 
         <div class="acts">
+          <div class="ab sm" id="abUndo">↺</div>
           <div class="ab" id="abPass">✕</div>
           <div class="ab like" id="abLike">♥</div>
         </div>
-        <div class="mnote">✕ / ♥ を押して操作できます · 入場チェックイン済みの人だけ表示<span class="ko">✕ / ♥ 를 눌러 직접 조작해 보세요 · 체크인한 사람만 표시</span></div>
+        <div class="mnote" id="mnote">↺ 戻す · ✕ パス · ♥ いいね<span class="ko">↺ 되돌리기 · ✕ 패스 · ♥ 좋아요</span></div>
 
         <div class="mstat" id="mstat">
-          <div class="sr"><span class="k2">今夜のマッチ</span><span class="v2" id="msMatch">24</span><span class="u2">組</span></div>
+          <div class="mrow"><span class="k2">今夜のマッチ</span><span class="avs2" id="mavs"></span><span class="v2" id="msMatch">24</span><span class="u2">組</span></div>
           <div class="sr"><span class="k2">相席が成立した卓</span><span class="v2" id="msTable">9</span><span class="u2">卓</span></div>
           <div class="sr hi"><span class="k2">そこから生まれた売上</span><span class="v2">¥<span id="msRev">412,000</span></span></div>
           <div class="sfoot">出会いが、そのまま卓売上になる<span class="ko">만남이 그대로 테이블 매출이 된다</span></div>
         </div>
 
         <div class="mchat" id="mchat" style="display:none">
-          <div class="cl">CHAT · 店内限定</div>
-          <div class="b them">こんばんは！ B ZONEにいます 🙂</div>
-          <div class="b me">S TABLE で飲んでます。合流します？</div>
+          <div class="cl"><span>CHAT · 店内限定</span><span class="cto" id="chatTo">MIKA</span></div>
+          <div class="clog" id="clog"></div>
+          <div class="cin">
+            <input id="cinp" type="text" placeholder="メッセージを送る…" autocomplete="off">
+            <button type="button" id="csend">送信</button>
+          </div>
           <div class="inv2" id="inv2">テーブルに招待 — TABLE JOIN</div>
         </div>
 
@@ -1569,6 +1615,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>05</b><span>MATCH — 店内限定マッチング</span></div>
+      <div class="tryit">▶ ↺ ✕ ♥ · フィルター · チャット送信まで、実際に操作できます<span class="ko">되돌리기·패스·좋아요·필터·채팅 전송까지 직접 조작됩니다</span></div>
       <div class="ds">その夜、同じ店内にいる人だけがつながる。出会いがテーブルの相席に変わり、そのまま卓売上になります。<span class="ko">그날 밤 같은 매장 안에 있는 사람끼리만 연결됩니다. 만남이 합석으로, 합석이 테이블 매출로 이어집니다.</span></div>
       <div class="wl">動作の流れ / 동작 방식</div>
       <ul>
@@ -1579,7 +1626,6 @@ body.rest .spot{opacity:0}
         <li><b>⑤ 退店から24時間で会話は自動終了</b> — 「その夜だけ」に閉じることが安全装置になります<span class="ko">퇴장 후 24시간이면 대화 자동 종료 — 「그날 밤만」으로 닫는 것이 안전장치</span></li>
         <li>本人確認・通報 / ブロック・スクリーンショット通知を標準装備<span class="ko">본인확인·신고/차단·스크린샷 알림 기본 탑재</span></li>
       </ul>
-      <div class="tryit">▶ ✕ / ♥ を押してマッチングを体験できます<span class="ko">✕ / ♥ 를 눌러 매칭을 직접 체험해 보세요</span></div>
       <div class="mkt">
         <div class="mk1">なぜこの機能が中心なのか</div>
         <div class="mk2">
@@ -2735,75 +2781,155 @@ $$('#marqTr span').forEach(function(sp){
   });
 });
 
-/* ══════════ P5 · MATCH — 실제 조작 + 자동 시연 ══════════
-   버튼을 누르면 그 즉시 사람이 조작한 대로 움직이고, 자동 시연은 멈춘다.
-   아무도 건드리지 않으면 스스로 한 바퀴씩 돌며 흐름을 보여준다. */
+/* ══════════ P5 · MATCH — 실제 조작 (필터 · 되돌리기 · 채팅 · 테이블 초대) ══════════
+   누르면 자동 시연이 멈추고 사람이 조작한 대로 움직인다. */
 (function(){
   var deck = $('deck'); if (!deck) return;
-  var A = $('pcA'), matched = $('matched'),
-      pass = $('abPass'), like = $('abLike'), chat = $('mchat'),
-      nameEl = $('pcName'), subEl = $('pcSub'), tagEl = $('pcTags'), zoneEl = $('pcZone'),
-      inv = $('inv2');
+  var A = $('pcA'), matched = $('matched'), chat = $('mchat'), mstat = $('mstat'),
+      pass = $('abPass'), like = $('abLike'), undo = $('abUndo'), inv = $('inv2');
 
   var PEOPLE = [
-    { n:'MIKA', s:'26 · 東京 · JP / EN',  t:['HOUSE','TECHNO','初来店'], z:'B ZONE', c:'mp1' },
-    { n:'RIN',  s:'24 · 大阪 · JP',       t:['EDM','K-POP'],            z:'FLOOR',  c:'mp2' },
-    { n:'JOON', s:'29 · SEOUL · KO / EN', t:['TECHNO','AFTER'],         z:'A ZONE', c:'mp3' },
-    { n:'AYA',  s:'27 · 横浜 · JP / EN',  t:['HOUSE','BOTTLE'],         z:'S TABLE',c:'mp2' }
+    { n:'MIKA', s:'26 · 東京 · JP / EN',   t:['HOUSE','TECHNO'],  z:'B',     zl:'B ZONE',  c:'mp1', bio:'今日はTECHNOだけ踊りたい',      cm:'ALAN SHIRAHAMA をフォロー' },
+    { n:'RIN',  s:'24 · 大阪 · JP',        t:['EDM','K-POP'],     z:'FLOOR', zl:'FLOOR',   c:'mp2', bio:'友だち2人で来てます',           cm:'ELLIA をフォロー' },
+    { n:'JOON', s:'29 · SEOUL · KO / EN',  t:['TECHNO','AFTER'],  z:'A',     zl:'A ZONE',  c:'mp3', bio:'アフターまで行ける人',           cm:'KEY:NA をフォロー' },
+    { n:'AYA',  s:'27 · 横浜 · JP / EN',   t:['HOUSE','BOTTLE'],  z:'S',     zl:'S TABLE', c:'mp2', bio:'ボトル開けてます、合流歓迎',     cm:'MACKER をフォロー' },
+    { n:'LEO',  s:'31 · London · EN',      t:['TECHNO','TRAVEL'], z:'FLOOR', zl:'FLOOR',   c:'mp3', bio:'Tokyo 3日目、案内してくれる人',  cm:'旅行者ウェルカム' }
   ];
-  var i = 0, busy = false, manual = false, auto = null;
+  var ZCOUNT = { ALL:138, FLOOR:62, A:24, B:31, S:21 };
+  var filt = 'ALL', pool = PEOPLE.slice(), i = 0, busy = false, manual = false, auto = null, hist = [];
 
-  function paint(p){
-    nameEl.textContent = p.n; subEl.textContent = p.s; zoneEl.textContent = p.z;
-    tagEl.innerHTML = p.t.map(function(x){ return '<span>' + x + '</span>'; }).join('');
-    A.querySelector('.ph3').className = 'ph3 ' + p.c;
+  function repool(){
+    pool = (filt === 'ALL') ? PEOPLE.slice() : PEOPLE.filter(function(p){ return p.z === filt; });
+    if (!pool.length) pool = PEOPLE.slice();
+    i = 0; paint(pool[0]);
+    if ($('mCount')) $('mCount').textContent = ZCOUNT[filt] || 0;
   }
-  function tapBtn(el){ el.classList.add('hit'); setTimeout(function(){ el.classList.remove('hit'); }, 220); }
-  function nextCard(){ i = (i + 1) % PEOPLE.length; paint(PEOPLE[i]); }
+  function paint(p){
+    if (!p) return;
+    $('pcName').textContent = p.n; $('pcSub').textContent = p.s;
+    $('pcZone').textContent = p.zl; $('pcBio').textContent = p.bio;
+    $('pcCommon').textContent = '◆ 共通 — ' + p.cm;
+    $('pcTags').innerHTML = p.t.map(function(x){ return '<span>' + x + '</span>'; }).join('');
+    A.querySelector('.ph3').className = 'ph3 ' + p.c;
+    var d = $('pcDots'); if (d){ var k = i % 3;
+      [].slice.call(d.children).forEach(function(e, n){ e.className = (n === k) ? 'on' : ''; }); }
+  }
+  function cur(){ return pool[i % pool.length]; }
+  function tapBtn(el){ el.classList.add('hit'); setTimeout(function(){ el.classList.remove('hit'); }, 200); }
+  function next(){ i = (i + 1) % pool.length; paint(cur()); }
 
   function doPass(){
     if (busy) return; busy = true;
-    tapBtn(pass); A.classList.add('gone-l');
-    setTimeout(function(){ A.classList.remove('gone-l'); nextCard(); busy = false; }, 560);
+    hist.push(i); tapBtn(pass); A.classList.add('gone-l');
+    setTimeout(function(){ A.classList.remove('gone-l'); next(); busy = false; }, 520);
+  }
+  function doUndo(){
+    if (busy || !hist.length) return;
+    tapBtn(undo); i = hist.pop(); paint(cur());
   }
   function doLike(){
     if (busy) return; busy = true;
-    tapBtn(like); A.classList.add('gone-r');
+    var p = cur();
+    hist.push(i); tapBtn(like); A.classList.add('gone-r');
     setTimeout(function(){
       matched.classList.add('show');
+      var d = matched.querySelector('.duo'); if (d && d.children[1]) d.children[1].className = p.c;
       var m = $('msMatch'), t = $('msTable'), r = $('msRev');
       if (m) m.textContent = (+m.textContent + 1);
+      var av = $('mavs');
+      if (av && av.children.length < 6){ var e = document.createElement('i'); e.className = p.c; av.appendChild(e); }
       if (t && Math.random() < .5){
         t.textContent = (+t.textContent + 1);
         if (r) r.textContent = (parseInt(r.textContent.replace(/,/g,''),10) + 46000).toLocaleString();
       }
-    }, 480);
-    setTimeout(function(){ chat.style.display = 'block'; var ms=$('mstat'); if(ms) ms.style.display='none'; }, 1500);
+    }, 460);
+    setTimeout(function(){ openChat(p); }, 1400);
+  }
+  function openChat(p){
+    if ($('chatTo')) $('chatTo').textContent = p.n;
+    var log = $('clog');
+    if (log){
+      log.innerHTML = '';
+      say('them', 'こんばんは！ ' + p.zl + 'にいます 🙂');
+    }
+    if (inv){ inv.classList.remove('done'); inv.textContent = 'テーブルに招待 — TABLE JOIN'; }
+    chat.style.display = 'block';
+    if (mstat) mstat.style.display = 'none';
+  }
+  function say(who, txt){
+    var log = $('clog'); if (!log) return;
+    var b = document.createElement('div');
+    b.className = 'b ' + who; b.textContent = txt;
+    log.appendChild(b);
+    while (log.children.length > 3) log.removeChild(log.firstChild);
   }
   function reset(){
     matched.classList.remove('show'); chat.style.display = 'none';
-    var ms = $('mstat'); if (ms) ms.style.display = 'block';
-    A.classList.remove('gone-r'); nextCard(); busy = false;
+    if (mstat) mstat.style.display = 'block';
+    A.classList.remove('gone-r'); next(); busy = false;
   }
 
-  /* 사람이 누르면 자동 시연을 멈춘다 — 조작이 시연과 싸우지 않게 */
+  /* 채팅 — 실제로 입력하고 보내면 상대가 답한다 */
+  var REPLY = ['いいですね！', 'どこの卓ですか？', '今から行きます 🙌', 'OK！ 5分で', 'ありがとう！'];
+  function send(){
+    var inp = $('cinp'); if (!inp) return;
+    var v = (inp.value || '').trim(); if (!v) return;
+    manualize(); say('me', v); inp.value = '';
+    setTimeout(function(){ say('them', REPLY[Math.floor(Math.random() * REPLY.length)]); }, 900);
+  }
+  if ($('csend')) $('csend').addEventListener('click', send);
+  if ($('cinp')) $('cinp').addEventListener('keydown', function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); send(); }
+  });
+
+  /* 테이블 초대 — 04 화면의 TABLE JOIN 인원이 실제로 늘어난다 */
+  if (inv) inv.addEventListener('click', function(e){
+    e.stopPropagation(); manualize();
+    if (inv.classList.contains('done')) return;
+    inv.classList.add('done'); inv.textContent = '招待しました — 合流待ち';
+    say('them', '行きます！');
+    var cnt = $('joinCnt'), avs = $('joinAvs'), pp = $('joinPP'), card = $('joinCard');
+    if (cnt){
+      var n = Math.min(8, (+cnt.textContent) + 1);
+      cnt.textContent = n;
+      if (avs && avs.children.length < 8){
+        var e2 = document.createElement('i'); e2.className = 'nw'; avs.appendChild(e2);
+        setTimeout(function(){ e2.classList.remove('nw'); }, 600);
+      }
+      if (pp) pp.textContent = Math.round(180000 / n).toLocaleString();
+      if (card){ card.classList.add('beat'); setTimeout(function(){ card.classList.remove('beat'); }, 500); }
+      var ph4 = $('ph4');
+      if (ph4){ ph4.classList.add('beatp'); setTimeout(function(){ ph4.classList.remove('beatp'); }, 300); }
+    }
+  });
+
+  /* 필터 */
+  $$('#mfilt .fc').forEach(function(c){
+    c.addEventListener('click', function(){
+      manualize();
+      $$('#mfilt .fc').forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on'); filt = c.getAttribute('data-z'); repool();
+      matched.classList.remove('show'); chat.style.display = 'none';
+      if (mstat) mstat.style.display = 'block';
+      A.classList.remove('gone-l','gone-r'); busy = false;
+    });
+  });
+
   function manualize(){ if (!manual){ manual = true; clearInterval(auto); auto = null; } }
   pass.addEventListener('click', function(){ manualize(); doPass(); });
   like.addEventListener('click', function(){ manualize(); doLike(); });
+  undo.addEventListener('click', function(){ manualize(); doUndo(); });
   matched.addEventListener('click', function(){ manualize(); reset(); });
-  if (inv) inv.addEventListener('click', function(e){ e.stopPropagation(); manualize(); reset(); });
-  [pass, like].forEach(function(b){ b.style.cursor = 'pointer'; });
-  matched.style.pointerEvents = 'auto';
+  matched.style.pointerEvents = 'auto'; matched.style.cursor = 'pointer';
 
-  /* 자동 시연 한 바퀴: PASS → LIKE → 매칭 → 채팅 → 리셋 */
   function cycle(){
     if (manual) return;
     doPass();
-    setTimeout(function(){ if (!manual) doLike(); }, 1900);
-    setTimeout(function(){ if (!manual) reset(); }, 6900);
+    setTimeout(function(){ if (!manual) doLike(); }, 1800);
+    setTimeout(function(){ if (!manual) reset(); }, 7400);
   }
-  paint(PEOPLE[0]);
-  if (!REDUCED){ cycle(); auto = setInterval(cycle, 8600); }
+  repool();
+  if (!REDUCED){ cycle(); auto = setInterval(cycle, 9200); }
 })();
 
 /* ══════════ MUSIC — 실제 유튜브 재생 (형님 공유 5곡) ══════════ */
@@ -3215,6 +3341,155 @@ if (!REDUCED) setInterval(function(){ qs = qs > 0 ? qs - 1 : 30; if ($('qsec')) 
         d.className = k < n ? 'f' : '';
         if (k === n - 1){ d.classList.add('pop'); setTimeout(function(){ d.classList.remove('pop'); }, 420); }
       });
+    });
+  }
+})();
+
+/* ══════════ 추가 조작 — HOME · DJ · MY ══════════ */
+(function(){
+
+  /* ── HOME: 도시 전환 ── */
+  var CITIES = ['SHINJUKU','SHIBUYA','ROPPONGI','OSAKA'];
+  var ci = 0, cty = document.querySelector('.cty');
+  if (cty && cty.textContent.indexOf('▾') >= 0){
+    cty.addEventListener('click', function(){
+      goManual('p3');
+      ci = (ci + 1) % CITIES.length;
+      cty.textContent = CITIES[ci] + ' ▾';
+    });
+  }
+
+  /* ── HOME: 라인업 DJ를 누르면 그 DJ가 '지금 플레이 중'이 된다 ── */
+  $$('.lu').forEach(function(l){
+    l.addEventListener('click', function(){
+      goManual('p2');
+      $$('.lu').forEach(function(x){ x.classList.remove('on'); });
+      l.classList.add('on');
+      var nm = l.getAttribute('data-a');
+      if ($('npArtist') && nm) $('npArtist').textContent = nm;
+      var ph1 = document.querySelector('.phone');
+      if (ph1){ ph1.classList.add('beatp'); setTimeout(function(){ ph1.classList.remove('beatp'); }, 300); }
+    });
+  });
+
+  /* ── HOME: 쿠폰을 누르면 받아진다 (남은 수량 감소) ── */
+  var cp = document.querySelector('.coupon');
+  if (cp){
+    cp.addEventListener('click', function(){
+      if (cp.classList.contains('got')) return;
+      goManual('p3');
+      var left = $('coupLeft');
+      if (left) left.textContent = Math.max(0, (+left.textContent) - 1);
+      cp.classList.add('got');
+      var g = document.createElement('div');
+      g.className = 'gotmark'; g.textContent = 'GOT IT';
+      cp.appendChild(g);
+      setTimeout(function(){ cp.classList.remove('got'); if (g.parentNode) g.parentNode.removeChild(g); }, 2600);
+    });
+  }
+
+  /* ── HOME: 혼잡도를 누르면 3단계가 순환한다 ── */
+  var CROWD = [
+    { st:'CALM',  sub:'すぐ入場できます · NO WAIT',        k:0 },
+    { st:'BUSY',  sub:'入場まで約10分 · ENTRY ~10 MIN',    k:1 },
+    { st:'PEAK',  sub:'入場まで約25分 · ENTRY ~25 MIN',    k:2 }
+  ];
+  var cw = document.querySelector('.crowd'), cwi = 1;
+  if (cw){
+    cw.addEventListener('click', function(){
+      goManual('p3');
+      cwi = (cwi + 1) % 3;
+      var c = CROWD[cwi];
+      if ($('crowdSt'))  $('crowdSt').textContent  = c.st;
+      if ($('crowdSub')) $('crowdSub').textContent = c.sub;
+      var mt = $('crowdMt');
+      if (mt) [].slice.call(mt.children).forEach(function(e, n){
+        e.className = 'c' + n + (n === c.k ? ' a' : '');
+      });
+      cw.classList.add('flash'); setTimeout(function(){ cw.classList.remove('flash'); }, 420);
+    });
+  }
+
+  /* ── DJ: 로스터를 누르면 그 아티스트로 바뀐다 ── */
+  var ROSTER = {
+    'ALAN':   { full:'ALAN SHIRAHAMA', sub:'GENERATIONS from EXILE TRIBE · PKCZ®', g:['EDM','HOUSE','OPEN FORMAT'], av:'av-alan' },
+    'DUE':    { full:'DUE',      sub:'NUBREED ENTERTAINMENT', g:['HOUSE','DISCO'],        av:'av-due' },
+    'ELLIA':  { full:'ELLIA',    sub:'NUBREED ENTERTAINMENT', g:['TECHNO','MELODIC'],     av:'av-ellia' },
+    'GIO':    { full:'GIO',      sub:'NUBREED ENTERTAINMENT', g:['EDM','FESTIVAL'],       av:'av-gio' },
+    'KEY:NA': { full:'KEY:NA',   sub:'NUBREED ENTERTAINMENT', g:['HOUSE','VOCAL'],        av:'av-keyna' },
+    'MACKER': { full:'MACKER',   sub:'NUBREED ENTERTAINMENT · TOMORROWLAND 2026', g:['BIG ROOM','FESTIVAL'], av:'av-macker' },
+    'MORITA': { full:'MORITA',   sub:'NUBREED ENTERTAINMENT', g:['TECHNO','MINIMAL'],     av:'av-x' },
+    'MR.BLACK':{full:'MR.BLACK', sub:'NUBREED ENTERTAINMENT', g:['OPEN FORMAT','HIPHOP'], av:'av-x' }
+  };
+  $$('.roster .r').forEach(function(r){
+    r.addEventListener('click', function(){
+      goManual('p2');
+      $$('.roster .r').forEach(function(x){ x.classList.remove('on'); });
+      r.classList.add('on');
+      var key = r.querySelector('.nm').textContent.trim();
+      var d = ROSTER[key]; if (!d) return;
+      var head = document.querySelector('.djhead');
+      if (head){
+        head.querySelector('.nm').textContent = d.full;
+        head.querySelector('.sb').textContent = d.sub;
+        var av = head.querySelector('.av'); if (av) av.className = 'av rnd ' + d.av;
+      }
+      /* 장르 칩(3번째 djrow)만 교체 — 수상 이력은 임의로 만들지 않는다 */
+      var rows = $$('.djrow');
+      if (rows.length >= 3){
+        rows[2].innerHTML = d.g.map(function(x){ return '<span class="chip gh">' + x + '</span>'; }).join('');
+      }
+      var cov = document.querySelector('.cover .tex');
+      if (cov){ cov.style.opacity = '.85'; setTimeout(function(){ cov.style.opacity = ''; }, 300); }
+    });
+  });
+
+  /* ── DJ: 음원 카드를 누르면 플레이어에 그 곡이 올라온다 ── */
+  $$('.rail .rl').forEach(function(rl){
+    rl.addEventListener('click', function(){
+      goManual('p2');
+      var t = rl.querySelector('.nm'), a = rl.querySelector('.ar'), ty = rl.querySelector('.ty');
+      var pl = $('player');
+      if (pl){
+        pl.classList.add('on');
+        var s1 = pl.querySelector('.t .s'), a1 = pl.querySelector('.t .a');
+        if (s1) s1.textContent = (t ? t.textContent : '') + (a ? ' — ' + a.textContent : '');
+        if (a1) a1.textContent = (ty ? ty.textContent : 'TRACK') + ' · 再生中';
+      }
+      if ($('npTitle') && t)  $('npTitle').textContent  = t.textContent;
+      if ($('npArtist') && a) $('npArtist').textContent = a.textContent;
+    });
+  });
+
+  /* ── MY: 멤버십 카드를 누르면 앞뒤로 뒤집힌다 (QR 확인) ── */
+  var mc = $('mcard');
+  if (mc){
+    mc.addEventListener('click', function(){
+      goManual('p4');
+      mc.classList.toggle('flip');
+    });
+  }
+
+  /* ── MY: JOIN을 누르면 인원이 늘고 1인당 금액이 내려간다 ── */
+  var jb = $('joinBtn');
+  if (jb){
+    jb.addEventListener('click', function(){
+      goManual('p4');
+      var cnt = $('joinCnt'), avs = $('joinAvs'), pp = $('joinPP'), card = $('joinCard');
+      if (!cnt) return;
+      var n = +cnt.textContent;
+      if (n >= 8){                        /* 다 차면 처음 상태로 */
+        n = 4; cnt.textContent = n;
+        if (avs) avs.innerHTML = '<i></i><i></i><i></i><i></i>';
+        if (card) card.classList.remove('full');
+        if (jb) jb.textContent = 'JOIN';
+      } else {
+        n += 1; cnt.textContent = n;
+        if (avs){ var e = document.createElement('i'); e.className = 'nw'; avs.appendChild(e);
+          setTimeout(function(){ e.classList.remove('nw'); }, 600); }
+        if (n >= 8){ if (card) card.classList.add('full'); jb.textContent = 'FULL — 満席'; }
+      }
+      if (pp) pp.textContent = Math.round(180000 / n).toLocaleString();
     });
   }
 })();
