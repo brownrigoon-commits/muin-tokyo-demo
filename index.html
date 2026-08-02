@@ -718,6 +718,19 @@ html.gate-on .gate{display:grid}
 .marq .tr>span:hover,.marq .tr>span.hl{color:var(--tx-1);-webkit-text-stroke-color:var(--tx-1)}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+.tryit{margin-top:11px;padding:9px 12px;border-radius:10px;background:var(--shiro);color:var(--shiro-t);
+  font-family:var(--label);font-size:9px;letter-spacing:.14em;font-weight:700;text-align:center}
+.tryit .ko{font-size:9.5px;margin-top:3px;opacity:.7;letter-spacing:0}
+/* 조작 가능한 요소 피드백 */
+.zn{cursor:pointer;transition:border-color .2s var(--ease),background .2s var(--ease)}
+.zn:hover{border-color:var(--tx-1)}
+.vt .v{transition:background .3s var(--ease);border-radius:6px}
+.vt .v:hover{background:rgba(250,250,250,.06)}
+.vt .v.voted{background:rgba(250,250,250,.16)}
+.stamp .dots i.pop{animation:popin .42s var(--ease)}
+.pt{cursor:pointer}
+.cta,.paybtn{cursor:pointer}
+
 /* ═════════════ P5 · MATCH (데이팅) ═════════════ */
 .mkt{margin-top:13px;padding:13px 15px;border:1px solid var(--line-hi);border-radius:12px;background:var(--k-1)}
 .mkt .mk1{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:13px;letter-spacing:-.005em}
@@ -1310,8 +1323,9 @@ body.rest .spot{opacity:0}
         <li>楽曲カードをタップすると<b>アプリ内プレイヤー</b>が立ち上がります（自動で再現されます）<span class="ko">음원 카드를 탭하면 <b>앱 안에서 바로 재생</b>되는 플레이어가 올라옵니다 (자동 재현)</span></li>
         <li><b>DJ REQUEST</b> は今夜かける曲のファン投票。順位はその場で入れ替わります<span class="ko">DJ REQUEST는 오늘 밤 틀 곡의 팬 투표. 순위가 그 자리에서 뒤바뀝니다</span></li>
         <li>表示中のDJ・楽曲・受賞歴は<b>すべて実在</b>のものです（NUBREED所属9組）<span class="ko">표시된 DJ·음원·수상 이력은 모두 <b>실재</b>합니다 (뉴브리드 소속 9팀)</span></li>
-        <li>ここに並ぶ音源は <em>05</em> の <b>MUSIC</b> で実際に再生できます<span class="ko">여기 놓인 음원은 <b>05 MUSIC</b> 섹션에서 실제로 재생됩니다</span></li>
+        <li>ここに並ぶ音源は <b>MUSIC</b> セクションで実際に再生できます<span class="ko">여기 놓인 음원은 MUSIC 섹션에서 실제로 재생됩니다</span></li>
       </ul>
+      <div class="tryit">▶ DJ REQUEST の曲を押すと票が入り、順位が入れ替わります<span class="ko">DJ REQUEST의 곡을 누르면 표가 들어가고 순위가 바뀝니다</span></div>
     </div>
     </div>
 
@@ -1396,6 +1410,7 @@ body.rest .spot{opacity:0}
         <li><b>DMCC</b> を選ぶと ¥180,000 → <b>207,000 DMCC（+15%）</b> がその場で計算されます<span class="ko">DMCC를 고르면 ¥180,000 → <b>207,000 DMCC (+15%)</b>가 즉석에서 계산됩니다</span></li>
         <li>決済が完了すると <em>01</em> の残り卓数と <b>OPERATOR VIEW</b> の売上が同時に動きます<span class="ko">결제가 끝나면 01의 잔여 테이블과 OPERATOR VIEW의 매출이 동시에 움직입니다</span></li>
       </ul>
+      <div class="tryit">▶ 座席 → RESERVE → 決済方法 → PAY まで実際に押せます<span class="ko">좌석 → RESERVE → 결제수단 → PAY까지 직접 눌러 보세요</span></div>
     </div>
     </div>
 
@@ -1485,6 +1500,7 @@ body.rest .spot{opacity:0}
         <li>スタンプは <b>5 / 10 / 20回</b> で特典が解放。来店頻度そのものが設計されています<span class="ko">스탬프는 <b>5 / 10 / 20회</b>에 혜택이 열립니다. 방문 빈도 자체를 설계했습니다</span></li>
         <li><b>TABLE JOIN</b> は割り勘で卓を埋める機能。人数が増えるほど1人あたりが下がります<span class="ko">TABLE JOIN은 더치페이로 테이블을 채우는 기능. 인원이 늘수록 1인당 금액이 내려갑니다</span></li>
       </ul>
+      <div class="tryit">▶ スタンプの列を押すと1個ずつ貯まります<span class="ko">스탬프 줄을 누르면 1개씩 쌓입니다</span></div>
     </div>
     </div>
 
@@ -1563,6 +1579,7 @@ body.rest .spot{opacity:0}
         <li><b>⑤ 退店から24時間で会話は自動終了</b> — 「その夜だけ」に閉じることが安全装置になります<span class="ko">퇴장 후 24시간이면 대화 자동 종료 — 「그날 밤만」으로 닫는 것이 안전장치</span></li>
         <li>本人確認・通報 / ブロック・スクリーンショット通知を標準装備<span class="ko">본인확인·신고/차단·스크린샷 알림 기본 탑재</span></li>
       </ul>
+      <div class="tryit">▶ ✕ / ♥ を押してマッチングを体験できます<span class="ko">✕ / ♥ 를 눌러 매칭을 직접 체험해 보세요</span></div>
       <div class="mkt">
         <div class="mk1">なぜこの機能が中心なのか</div>
         <div class="mk2">
@@ -2481,10 +2498,10 @@ function p2Loop(){
   setTimeout(function(){ tapAt(tap2, $('rlMix')); }, 4600);
   setTimeout(function(){ if (player) player.classList.add('on'); }, 4900);
   setTimeout(function(){ p2scroll(-232); }, 7000);
-  setTimeout(function(){
+  setTimeout(function(){ if (MANUAL.p2) return;
     var rows = $$('#voteBox .v'); if (rows[1]) tapAt(tap2, rows[1]);
   }, 8000);
-  setTimeout(function(){
+  setTimeout(function(){ if (MANUAL.p2) return;
     voteLoop++;
     var rows = $$('#voteBox .v'); if (!rows.length) return;
     var r = rows[1], v = parseInt(r.getAttribute('data-v'), 10) + (voteLoop % 3 === 0 ? 29 : 4);
@@ -2502,6 +2519,11 @@ function p2Loop(){
   setTimeout(function(){ p2scroll(0); if (player) player.classList.remove('on'); }, 9800);
 }
 
+/* 사람이 직접 조작하면 해당 화면의 자동 시연은 멈춘다 */
+var MANUAL = { p2:false, p3:false, p4:false };
+var LOOPS  = { p2:null,  p3:null,  p4:null  };
+function goManual(k){ MANUAL[k] = true; if (LOOPS[k]){ clearInterval(LOOPS[k]); LOOPS[k] = null; } }
+
 /* ══════════ P3 루프 (11.5초) · VIP 예약 → 코인 결제 ══════════ */
 var ZONES = [
   { id:'S', el:'zS', name:'S — STAGE SIDE', cap:'8名 / MOËT ×2 + BELVEDERE ×1 込み', price:180000, per:22500, label:'S TABLE' },
@@ -2511,7 +2533,9 @@ var ZONES = [
 var zIx = 0, zRemain = { S:1, A:3, B:2 };
 var tap3 = $('tap3'), sheet3 = $('sheet3'), done3 = $('done3');
 
+var curZ = null;
 function selectZone(z){
+  curZ = z;
   $$('.zn').forEach(function(e){ e.classList.remove('sel'); });
   var el = $(z.el); if (el) el.classList.add('sel');
   if ($('zName'))  $('zName').textContent  = z.name;
@@ -2530,20 +2554,20 @@ function paintPromo(z){
 }
 function p3Loop(){
   var z = ZONES[zIx % ZONES.length];
-  setTimeout(function(){ tapAt(tap3, $(z.el)); }, 150);
-  setTimeout(function(){ selectZone(z); }, 420);
-  setTimeout(function(){ tapAt(tap3, $('cta3')); }, 1500);
-  setTimeout(function(){ if (sheet3) sheet3.classList.add('open'); }, 1900);
-  setTimeout(function(){ tapAt(tap3, $('ptCoin')); }, 3000);
-  setTimeout(function(){
+  setTimeout(function(){ if (MANUAL.p3) return; tapAt(tap3, $(z.el)); }, 150);
+  setTimeout(function(){ if (MANUAL.p3) return; selectZone(z); }, 420);
+  setTimeout(function(){ if (MANUAL.p3) return; tapAt(tap3, $('cta3')); }, 1500);
+  setTimeout(function(){ if (MANUAL.p3) return; if (sheet3) sheet3.classList.add('open'); }, 1900);
+  setTimeout(function(){ if (MANUAL.p3) return; tapAt(tap3, $('ptCoin')); }, 3000);
+  setTimeout(function(){ if (MANUAL.p3) return;
     if ($('ptCoin')) $('ptCoin').classList.add('on');
     if ($('ptCard')) $('ptCard').classList.remove('on');
     if ($('wallet')) $('wallet').classList.add('on');
     animNum($('walletV'), z.price, Math.round(z.price * 1.15), 900);   /* +15% 보너스 롤업 */
   }, 3300);
-  setTimeout(function(){ tapAt(tap3, $('pay3')); }, 4600);
-  setTimeout(function(){ if ($('pay3')){ $('pay3').classList.add('busy'); $('pay3').textContent = 'PROCESSING…'; } }, 4800);
-  setTimeout(function(){
+  setTimeout(function(){ if (MANUAL.p3) return; tapAt(tap3, $('pay3')); }, 4600);
+  setTimeout(function(){ if (MANUAL.p3) return; if ($('pay3')){ $('pay3').classList.add('busy'); $('pay3').textContent = 'PROCESSING…'; } }, 4800);
+  setTimeout(function(){ if (MANUAL.p3) return;
     if (sheet3) sheet3.classList.remove('open');
     if (done3){
       done3.querySelector('.t2').innerHTML = z.name + ' / ' + z.cap.split(' /')[0] + '<br>2027.7.31（土） 21:00';
@@ -2551,7 +2575,7 @@ function p3Loop(){
     }
   }, 5600);
   /* ── 8.5s : 리셋 + SYNC-A + SYNC-E 동시 발화 ── */
-  setTimeout(function(){
+  setTimeout(function(){ if (MANUAL.p3) return;
     if (done3) done3.classList.remove('show');
     if ($('ptCoin')) $('ptCoin').classList.remove('on');
     if ($('ptCard')) $('ptCard').classList.add('on');
@@ -3086,11 +3110,120 @@ if (cg){ var EV = [4,5,9,11,12,18,19,23,25,26,30];   /* 금·토 정기 + 평일
 var qs = 30;
 if (!REDUCED) setInterval(function(){ qs = qs > 0 ? qs - 1 : 30; if ($('qsec')) $('qsec').textContent = qs; }, 1000);
 
+/* ══════════ 직접 조작 — 누르면 그 화면의 자동 시연이 멈춘다 ══════════ */
+(function(){
+
+  /* ── VIP 예약: 좌석 선택 → 결제수단 → 결제 → 완료 ── */
+  var ZMAP = { zS:'S', zA:'A', zB:'B', zA2:'A', zB2:'B' };
+  Object.keys(ZMAP).forEach(function(id){
+    var el = $(id); if (!el) return;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function(){
+      goManual('p3');
+      var z = ZONES.filter(function(x){ return x.id === ZMAP[id]; })[0];
+      if (z) selectZone(z);
+      if (sheet3) sheet3.classList.remove('open');
+      if (done3)  done3.classList.remove('show');
+    });
+  });
+
+  var cta = $('cta3');
+  if (cta){ cta.style.cursor = 'pointer';
+    cta.addEventListener('click', function(){ goManual('p3'); if (sheet3) sheet3.classList.add('open'); }); }
+
+  function payMode(coin){
+    var pc = $('ptCard'), pk = $('ptCoin'), w = $('wallet'), z = curZ || ZONES[0];
+    if (!pc || !pk) return;
+    pc.classList.toggle('on', !coin); pk.classList.toggle('on', !!coin);
+    if (w) w.classList.toggle('on', !!coin);
+    if ($('walletV')){
+      if (coin) animNum($('walletV'), z.price, Math.round(z.price * 1.15), 700);
+      else $('walletV').textContent = comma(z.price);
+    }
+  }
+  ['ptCard','ptCoin'].forEach(function(id){
+    var el = $(id); if (!el) return;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function(){ goManual('p3'); payMode(id === 'ptCoin'); });
+  });
+
+  var pay = $('pay3'), paying = false;
+  if (pay){ pay.style.cursor = 'pointer';
+    pay.addEventListener('click', function(){
+      goManual('p3'); if (paying) return; paying = true;
+      pay.classList.add('busy'); pay.textContent = 'PROCESSING…';
+      setTimeout(function(){
+        var z = curZ || ZONES[0];
+        if (sheet3) sheet3.classList.remove('open');
+        if (done3){
+          done3.querySelector('.t2').innerHTML = z.name + ' / ' + z.cap.split(' /')[0] + '<br>2027.7.31（土） 21:00';
+          done3.classList.add('show');
+        }
+        pay.classList.remove('busy'); pay.textContent = 'PAY WITH DMCC';
+        try { syncA(z); syncE(z); } catch(e){}
+        paying = false;
+      }, 900);
+    });
+  }
+  if (done3){
+    done3.style.pointerEvents = 'auto'; done3.style.cursor = 'pointer';
+    done3.addEventListener('click', function(){
+      done3.classList.remove('show'); payMode(false);
+      if ($('wallet')) $('wallet').classList.remove('on');
+    });
+  }
+
+  /* ── DJ REQUEST: 곡을 누르면 표가 오르고 순위가 바뀐다 ── */
+  var box = $('voteBox');
+  if (box){
+    function repaint(){
+      var rows = $$('#voteBox .v');
+      var vals = rows.map(function(x){ return parseInt(x.getAttribute('data-v'), 10); });
+      var max = Math.max.apply(null, vals);
+      rows.forEach(function(x){
+        x.querySelector('.br i').style.width =
+          Math.round(parseInt(x.getAttribute('data-v'), 10) / max * 100) + '%';
+      });
+      rows.slice().sort(function(a, b){
+        return parseInt(b.getAttribute('data-v'), 10) - parseInt(a.getAttribute('data-v'), 10);
+      }).forEach(function(r){ box.appendChild(r); });
+    }
+    $$('#voteBox .v').forEach(function(r){
+      r.style.cursor = 'pointer';
+      r.addEventListener('click', function(){
+        goManual('p2');
+        var v = parseInt(r.getAttribute('data-v'), 10) + 1;
+        r.setAttribute('data-v', v);
+        r.querySelector('.c').textContent = v;
+        r.classList.add('voted');
+        setTimeout(function(){ r.classList.remove('voted'); }, 400);
+        repaint();
+      });
+    });
+  }
+
+  /* ── STAMP: 누를 때마다 1개씩 찍힌다 (20개 채우면 처음으로) ── */
+  var sdot = $('stampDots'), sn = $('stampN');
+  if (sdot && sn){
+    sdot.style.cursor = 'pointer';
+    sdot.addEventListener('click', function(){
+      goManual('p4');
+      var n = parseInt(sn.textContent, 10);
+      n = (n >= 20) ? 1 : n + 1;
+      sn.textContent = n;
+      $$('#stampDots i').forEach(function(d, k){
+        d.className = k < n ? 'f' : '';
+        if (k === n - 1){ d.classList.add('pop'); setTimeout(function(){ d.classList.remove('pop'); }, 420); }
+      });
+    });
+  }
+})();
+
 /* ══════════ 루프 기동 (위상 스태거) ══════════ */
 if (!REDUCED){
-  setTimeout(function(){ p2Loop(); setInterval(p2Loop, 10500); }, 1500);
-  setTimeout(function(){ p3Loop(); setInterval(p3Loop, 11500); }, 3000);
-  setTimeout(function(){ p4Loop(); setInterval(p4Loop, 9500);  }, 4500);
+  setTimeout(function(){ p2Loop(); LOOPS.p2 = setInterval(p2Loop, 10500); }, 1500);
+  setTimeout(function(){ p3Loop(); LOOPS.p3 = setInterval(p3Loop, 11500); }, 3000);
+  setTimeout(function(){ p4Loop(); LOOPS.p4 = setInterval(p4Loop, 9500);  }, 4500);
 } else {
   selectZone(ZONES[0]);
 }
