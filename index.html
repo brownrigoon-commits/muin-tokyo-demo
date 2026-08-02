@@ -721,6 +721,29 @@ html.gate-on .gate{display:grid}
 .tryit{margin-top:11px;padding:9px 12px;border-radius:10px;background:var(--shiro);color:var(--shiro-t);
   font-family:var(--label);font-size:9px;letter-spacing:.14em;font-weight:700;text-align:center}
 .tryit .ko{font-size:9.5px;margin-top:3px;opacity:.7;letter-spacing:0}
+/* 더블탭 확대 차단 — 조작 중 화면이 멋대로 확대되지 않게 (핀치 줌은 유지) */
+html,body{touch-action:manipulation}
+.phone,.tablet,.mstage,.music{touch-action:manipulation}
+
+/* ═══ 가이드 링 — 여기를 누르세요 ═══ */
+.gring{position:absolute;z-index:60;border-radius:12px;pointer-events:none;
+  border:2px solid #FF3B3B;box-shadow:0 0 0 3px rgba(255,59,59,.22),0 0 16px rgba(255,59,59,.5);
+  animation:gpulse 1.35s ease-in-out infinite;transition:left .3s var(--ease),top .3s var(--ease),
+  width .3s var(--ease),height .3s var(--ease)}
+.gring b{position:absolute;left:50%;top:-9px;transform:translate(-50%,-100%);
+  font-family:var(--label);font-size:8px;letter-spacing:.16em;font-weight:700;
+  background:#FF3B3B;color:#FFF;border-radius:999px;padding:4px 9px;white-space:nowrap;
+  box-shadow:0 3px 10px rgba(0,0,0,.5)}
+.gring b:after{content:'';position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);
+  border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid #FF3B3B}
+.gring.low b{top:auto;bottom:-9px;transform:translate(-50%,100%)}
+.gring.low b:after{top:-4px;bottom:auto;border-top:0;border-bottom:5px solid #FF3B3B}
+@keyframes gpulse{
+  0%,100%{box-shadow:0 0 0 3px rgba(255,59,59,.22),0 0 16px rgba(255,59,59,.5)}
+  50%    {box-shadow:0 0 0 8px rgba(255,59,59,0),  0 0 22px rgba(255,59,59,.75)}
+}
+@media(prefers-reduced-motion:reduce){.gring{animation:none}}
+
 /* 조작 가능한 요소 피드백 */
 .cty,.lu,.coupon,.crowd,.roster .r,.rl,.mcard,.join .btn{cursor:pointer}
 .lu{transition:opacity .25s var(--ease),transform .25s var(--ease)}
@@ -1356,7 +1379,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>02</b><span>DJ — ARTIST PAGE</span></div>
-      <div class="tryit">▶ DJ REQUEST の曲を押すと票が入り、順位が入れ替わります<span class="ko">DJ REQUEST의 곡을 누르면 표가 들어가고 순위가 바뀝니다</span></div>
+      <div class="tryit">● 赤い枠を順番に押してみてください — DJ REQUEST の曲を押すと票が入り、順位が入れ替わります<span class="ko">빨간 표시를 순서대로 누르세요 — DJ REQUEST의 곡을 누르면 표가 들어가고 순위가 바뀝니다</span></div>
       <div class="ds">クラブアプリの核。所属DJのプロフィール・SNS・発売音源・ミックスセット・公演日程をひとつに束ねます。<span class="ko">클럽 앱의 핵심. 소속 DJ의 프로필·SNS·발매 음원·믹스셋·공연 일정을 하나로 묶습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1442,7 +1465,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>03</b><span>VIP TABLE × DMCC（ダグコイン）</span></div>
-      <div class="tryit">▶ 座席 → RESERVE → 決済方法 → PAY まで実際に押せます<span class="ko">좌석 → RESERVE → 결제수단 → PAY까지 직접 눌러 보세요</span></div>
+      <div class="tryit">● 赤い枠を順番に押してみてください — 座席 → RESERVE → 決済方法 → PAY まで実際に押せます<span class="ko">빨간 표시를 순서대로 누르세요 — 좌석 → RESERVE → 결제수단 → PAY까지 직접 눌러 보세요</span></div>
       <div class="ds">収益の中心。座席マップから卓を選び、コインで決済するまでの全工程を通しで再現しています。<span class="ko">수익의 중심. 좌석 맵에서 테이블을 고르고 코인으로 결제하기까지 전 과정을 재현했습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1532,7 +1555,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>04</b><span>MEMBERSHIP × COMMUNITY</span></div>
-      <div class="tryit">▶ スタンプの列を押すと1個ずつ貯まります<span class="ko">스탬프 줄을 누르면 1개씩 쌓입니다</span></div>
+      <div class="tryit">● 赤い枠を順番に押してみてください — スタンプの列を押すと1個ずつ貯まります<span class="ko">빨간 표시를 순서대로 누르세요 — 스탬프 줄을 누르면 1개씩 쌓입니다</span></div>
       <div class="ds">再来店をつくる仕組み。QR入場、来店スタンプ、そして空席を埋める相席マッチングまで。<span class="ko">재방문을 만드는 장치. QR 입장, 방문 스탬프, 그리고 빈자리를 채우는 합석 매칭까지.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
@@ -1615,7 +1638,7 @@ body.rest .spot{opacity:0}
     </div>
     <div class="pcap">
       <div class="ix"><b>05</b><span>MATCH — 店内限定マッチング</span></div>
-      <div class="tryit">▶ ↺ ✕ ♥ · フィルター · チャット送信まで、実際に操作できます<span class="ko">되돌리기·패스·좋아요·필터·채팅 전송까지 직접 조작됩니다</span></div>
+      <div class="tryit">● 赤い枠を順番に押してみてください — 全機能を体験できます<span class="ko">빨간 표시를 순서대로 누르면 전 기능을 체험할 수 있습니다</span></div>
       <div class="ds">その夜、同じ店内にいる人だけがつながる。出会いがテーブルの相席に変わり、そのまま卓売上になります。<span class="ko">그날 밤 같은 매장 안에 있는 사람끼리만 연결됩니다. 만남이 합석으로, 합석이 테이블 매출로 이어집니다.</span></div>
       <div class="wl">動作の流れ / 동작 방식</div>
       <ul>
@@ -3492,6 +3515,103 @@ if (!REDUCED) setInterval(function(){ qs = qs > 0 ? qs - 1 : 30; if ($('qsec')) 
       if (pp) pp.textContent = Math.round(180000 / n).toLocaleString();
     });
   }
+})();
+
+/* ══════════ 가이드 — 눌러야 할 곳을 빨간 링으로 알려준다 ══════════
+   링이 가리키는 것을 누르면 다음 기능으로 옮겨간다. 처음 보는 사람도 순서대로 따라가면
+   그 화면의 기능을 전부 만져보게 된다. 숨어 있는 대상은 자동으로 건너뛴다. */
+(function(){
+  if (typeof REDUCED !== 'undefined' && REDUCED) return;
+
+  function q(sel, n){ var l = $$(sel); return l[n || 0] || null; }
+  function visible(el){ return el && el.offsetParent !== null && el.getBoundingClientRect().width > 0; }
+
+  /* 각 화면에서 눌러볼 순서 — [대상을 찾는 함수, 라벨] */
+  var TOURS = [
+    { host: function(){ return $('crowdSt') && $('crowdSt').closest('.phone'); }, steps: [
+      [function(){ return document.querySelector('.cty'); },        '都市を変える'],
+      [function(){ return q('.lu', 2); },                            'DJを選ぶ'],
+      [function(){ return document.querySelector('.coupon'); },      'クーポンを取る'],
+      [function(){ return document.querySelector('.crowd'); },       '混雑度を見る']
+    ]},
+    { host: function(){ return $('ph2'); }, steps: [
+      [function(){ return q('.roster .r', 5); },                     'DJを切替'],
+      [function(){ return q('.rail .rl', 0); },                      '曲を再生'],
+      [function(){ return q('#voteBox .v', 1); },                    '投票する']
+    ]},
+    { host: function(){ return $('cta3') && $('cta3').closest('.phone'); }, steps: [
+      [function(){ return $('zB'); },                                '席を選ぶ'],
+      [function(){ return $('cta3'); },                              '予約する'],
+      [function(){ return $('ptCoin'); },                            'DMCCで払う'],
+      [function(){ return $('pay3'); },                              '決済'],
+      [function(){ return $('done3'); },                             '閉じる']
+    ]},
+    { host: function(){ return $('ph4'); }, steps: [
+      [function(){ return $('mcard'); },                             'カードを裏返す'],
+      [function(){ return $('stampDots'); },                         'スタンプを押す'],
+      [function(){ return $('joinBtn'); },                           '相席に参加']
+    ]},
+    { host: function(){ return $('ph5'); }, steps: [
+      [function(){ return q('#mfilt .fc', 2); },                     'ゾーンで絞る'],
+      [function(){ return $('abLike'); },                            'いいね'],
+      [function(){ return $('cinp'); },                              'メッセージを送る'],
+      [function(){ return $('inv2'); },                              'テーブルに招待'],
+      [function(){ return $('matched'); },                           '次へ']
+    ]}
+  ];
+
+  TOURS.forEach(function(tour){
+    var host = tour.host();
+    if (!host) return;
+    if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
+
+    var ring = document.createElement('div');
+    ring.className = 'gring';
+    ring.innerHTML = '<b></b>';
+    host.appendChild(ring);
+
+    var ix = 0;
+
+    function target(){ var st = tour.steps[ix]; return st ? st[0]() : null; }
+
+    function skipHidden(){
+      for (var n = 0; n < tour.steps.length; n++){
+        if (visible(target())) return true;
+        ix = (ix + 1) % tour.steps.length;
+      }
+      return false;
+    }
+
+    function place(){
+      if (!skipHidden()){ ring.style.display = 'none'; return; }
+      var t = target();
+      var hr = host.getBoundingClientRect(), tr = t.getBoundingClientRect();
+      ring.style.display = 'block';
+      ring.style.left   = (tr.left - hr.left - 4) + 'px';
+      ring.style.top    = (tr.top  - hr.top  - 4) + 'px';
+      ring.style.width  = (tr.width  + 8) + 'px';
+      ring.style.height = (tr.height + 8) + 'px';
+      /* 위쪽에 붙으면 라벨을 아래로 내려 잘리지 않게 */
+      ring.classList.toggle('low', (tr.top - hr.top) < 40);
+      ring.querySelector('b').textContent = tour.steps[ix][1];
+    }
+
+    function advance(){ ix = (ix + 1) % tour.steps.length; setTimeout(place, 120); }
+
+    /* 링이 가리키는 것을 눌렀을 때만 다음으로 */
+    host.addEventListener('click', function(e){
+      var t = target();
+      if (t && (t === e.target || t.contains(e.target))) advance();
+    }, true);
+    /* 입력창은 엔터/전송으로도 진행 */
+    host.addEventListener('keydown', function(e){
+      if (e.key === 'Enter'){ var t = target(); if (t && t === e.target) advance(); }
+    }, true);
+
+    place();
+    setInterval(place, 700);          /* 레이아웃이 바뀌어도 계속 따라붙는다 */
+    window.addEventListener('resize', place);
+  });
 })();
 
 /* ══════════ 루프 기동 (위상 스태거) ══════════ */
