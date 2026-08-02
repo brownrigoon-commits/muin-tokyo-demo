@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MU:IN TOKYO — App Concept by NUBREED</title>
-<meta name="description" content="MU:IN TOKYO アプリコンセプト — メンバーシップ・VIPテーブル・コイン決済まで実際に動作するデモ。Proposed by NUBREED.">
+<meta name="description" content="MU:IN TOKYO アプリコンセプト — メンバーシップ・VIPテーブル・店内マッチング・DMCC決済まで実際に動作するデモ。Proposed by NUBREED.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="MU:IN TOKYO — アプリコンセプト by NUBREED">
-<meta property="og:description" content="新宿、二〇二七。QR入場・VIPテーブル予約・MUIN COIN決済まで、実際に動作するアプリコンセプト。">
+<meta property="og:description" content="新宿、二〇二七。QR入場・VIPテーブル予約・店内マッチング・DMCC決済まで、実際に動作するアプリコンセプト。">
 <meta property="og:image" content="og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -455,7 +455,7 @@ html.gate-on .gate{display:grid}
 .player.on .pb i{animation:playprog 4.6s linear forwards}
 @keyframes playprog{from{width:6%}to{width:62%}}
 
-/* ═════════════ P3 · VIP × COIN ═════════════ */
+/* ═════════════ P3 · VIP × DMCC ═════════════ */
 .floor{margin:0 16px;height:176px;position:relative;border-radius:16px;border:1px solid var(--line);
   background:var(--k-1);overflow:hidden;flex:none}
 .floor .stage{position:absolute;left:50%;top:11px;transform:translateX(-50%);width:118px;height:15px;
@@ -718,6 +718,77 @@ html.gate-on .gate{display:grid}
 .marq .tr>span:hover,.marq .tr>span.hl{color:var(--tx-1);-webkit-text-stroke-color:var(--tx-1)}
 @keyframes marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+/* ═════════════ P5 · MATCH (데이팅) ═════════════ */
+.mkt{margin-top:13px;padding:13px 15px;border:1px solid var(--line-hi);border-radius:12px;background:var(--k-1)}
+.mkt .mk1{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:13px;letter-spacing:-.005em}
+.mkt .mk2{font-family:var(--jp);font-size:11px;color:var(--tx-2);margin-top:7px;line-height:1.6}
+.mkt .mk2 b{color:var(--tx-1)}
+
+.mhead{display:flex;justify-content:space-between;align-items:center;padding:6px 16px 10px;flex:none}
+.mhead .lg{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:15px;letter-spacing:.02em}
+.mhead .tn{font-family:var(--label);font-size:8px;letter-spacing:.14em;color:var(--tx-3);
+  border:1px solid var(--line);border-radius:999px;padding:3px 8px}
+.deck{position:relative;margin:0 16px;height:236px;flex:none}
+.pcard{position:absolute;inset:0;border-radius:18px;overflow:hidden;border:1px solid var(--line-hi);
+  background:var(--k-2);transition:transform .45s var(--ease),opacity .45s var(--ease)}
+.pcard.back{transform:scale(.94) translateY(9px);opacity:.5}
+.pcard.gone-l{transform:translateX(-118%) rotate(-13deg);opacity:0}
+.pcard.gone-r{transform:translateX(118%) rotate(13deg);opacity:0}
+.pcard .ph3{position:absolute;inset:0}
+.mp1{background:radial-gradient(120% 100% at 34% 22%,#4A4A4A,#111 72%)}
+.mp2{background:radial-gradient(120% 100% at 66% 26%,#3E3E3E,#0E0E0E 72%)}
+.mp3{background:radial-gradient(120% 100% at 44% 18%,#565656,#141414 72%)}
+.pcard .scr2{position:absolute;inset:0;background:linear-gradient(transparent 34%,rgba(5,5,5,.94))}
+.pcard .here{position:absolute;top:11px;left:11px;display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--label);font-size:8px;letter-spacing:.12em;color:#050505;background:#FAFAFA;
+  border-radius:999px;padding:4px 9px;font-weight:700}
+.pcard .here i{width:5px;height:5px;border-radius:50%;background:#050505;animation:pulse .469s ease-in-out infinite alternate}
+.pcard .pin2{position:absolute;top:11px;right:11px;font-family:var(--label);font-size:8px;
+  letter-spacing:.1em;color:var(--tx-2);background:rgba(5,5,5,.6);border:1px solid var(--line-hi);
+  border-radius:999px;padding:4px 9px}
+.pcard .pbody{position:absolute;left:0;right:0;bottom:0;padding:14px 15px}
+.pcard .nm2{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:20px;letter-spacing:-.01em;color:#FAFAFA}
+.pcard .sub2{font-family:var(--jp);font-size:10.5px;color:#C4C4C4;margin-top:3px}
+.pcard .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.pcard .tags span{font-family:var(--label);font-size:7.5px;letter-spacing:.1em;color:#DCDCDC;
+  border:1px solid rgba(250,250,250,.34);border-radius:999px;padding:3px 8px}
+.acts{display:flex;justify-content:center;gap:22px;margin-top:13px;flex:none}
+.acts .ab{width:50px;height:50px;border-radius:50%;border:1px solid var(--line-hi);background:var(--k-1);
+  display:grid;place-items:center;font-size:19px;color:var(--tx-2);transition:all .25s var(--ease)}
+.acts .ab.like{background:var(--shiro);color:var(--shiro-t);border-color:var(--shiro)}
+.acts .ab.hit{transform:scale(.84)}
+.acts .ab{cursor:pointer}
+.acts .ab:hover{border-color:var(--tx-1);color:var(--tx-1)}
+.acts .ab.like:hover{opacity:.85}
+.mnote{text-align:center;font-family:var(--label);font-size:7.5px;letter-spacing:.12em;color:var(--tx-3);margin-top:9px}
+.matched{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:rgba(5,5,5,.93);
+  backdrop-filter:blur(5px);opacity:0;pointer-events:none;transition:opacity .35s var(--ease)}
+.matched.show{opacity:1}
+.matched .mt2{font-family:var(--disp);font-weight:900;font-stretch:125%;font-size:26px;letter-spacing:.02em;text-align:center}
+.matched .ms2{font-family:var(--jp);font-size:11px;color:var(--tx-2);margin-top:6px;text-align:center}
+.matched .duo{display:flex;justify-content:center;margin-bottom:16px}
+.matched .duo i{width:54px;height:54px;border-radius:50%;display:block;
+  border:2px solid rgba(250,250,250,.92);box-shadow:0 6px 20px rgba(0,0,0,.65)}
+.matched .duo i+i{margin-left:-16px}
+.mstat{margin:12px 16px 0;border:1px solid var(--line);border-radius:13px;background:var(--k-1);padding:11px 13px;flex:none}
+.mstat .sr{display:flex;align-items:baseline;gap:7px;padding:5px 0;border-bottom:1px solid var(--line)}
+.mstat .sr:last-of-type{border-bottom:0}
+.mstat .k2{font-family:var(--jp);font-size:9.5px;color:var(--tx-3);flex:1}
+.mstat .v2{font-family:var(--label);font-weight:700;font-size:15px;color:var(--tx-1);font-variant-numeric:tabular-nums}
+.mstat .u2{font-family:var(--jp);font-size:9px;color:var(--tx-3)}
+.mstat .sr.hi .v2{font-size:16px}
+.mstat .sfoot{font-family:var(--label);font-size:7.5px;letter-spacing:.1em;color:var(--tx-3);margin-top:8px;
+  padding-top:7px;border-top:1px solid var(--line);text-align:center}
+.mstat .sfoot .ko{font-size:9px;margin-top:3px}
+.mchat{margin:12px 16px 0;border:1px solid var(--line);border-radius:13px;background:var(--k-1);padding:11px 12px;flex:none}
+.mchat .cl{font-family:var(--label);font-size:8px;letter-spacing:.16em;color:var(--tx-3)}
+.mchat .b{font-family:var(--jp);font-size:10px;margin-top:6px;padding:6px 9px;border-radius:9px;max-width:82%;line-height:1.45}
+.mchat .b.them{background:var(--k-3);color:var(--tx-1)}
+.mchat .b.me{background:var(--shiro);color:var(--shiro-t);margin-left:auto}
+.mchat .inv2{margin-top:9px;height:32px;border-radius:9px;background:var(--shiro);color:var(--shiro-t);
+  display:grid;place-items:center;font-family:var(--label);font-size:9px;letter-spacing:.14em;font-weight:700}
+.tab{font-size:7.5px;letter-spacing:.08em}
+
 /* ═════════════ SITEMAP ═════════════ */
 .smap{margin-top:74px}
 .smap .hd{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:20px}
@@ -759,6 +830,20 @@ html.gate-on .gate{display:grid}
 .reg .hd .ko{font-size:11px}
 .rc .d .ko{font-size:10.5px;margin-top:6px}
 @media(max-width:719px){.reg .grid{grid-template-columns:1fr}}
+.reg .tiers{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-bottom:16px}
+.tr2{font-family:var(--label);font-size:9px;letter-spacing:.16em;font-weight:600;padding:5px 13px;
+  border-radius:999px;border:1px solid var(--line-hi);color:var(--tx-2)}
+.tr2.blk{background:var(--shiro);color:var(--shiro-t);border-color:var(--shiro)}
+.tnote{font-family:var(--jp);font-size:11px;color:var(--tx-3);margin-left:6px}
+.reg .grid5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.reg .grid5 .rc{padding:15px 15px}
+.reg .grid5 .rc .d{font-size:11px;line-height:1.55;margin-top:9px}
+.pfoot{margin-top:16px;padding:15px 18px;border:1px solid var(--line-hi);border-radius:13px;
+  background:var(--k-1);font-family:var(--jp);font-size:12.5px;color:var(--tx-2);text-align:center}
+.pf1,.pf2{font-family:var(--label);font-weight:700;color:var(--tx-1);font-size:14px}
+.pdot{opacity:.4;margin:0 7px}
+@media(max-width:1100px){.reg .grid5{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:719px){.reg .grid5{grid-template-columns:1fr}}
 
 /* 실제로 열리는 링크 칩 */
 a.chip{text-decoration:none;cursor:pointer}
@@ -966,7 +1051,7 @@ body.rest .spot{opacity:0}
   <div class="stats">
     <div><span class="k">ENTRIES TONIGHT</span><span class="v" id="stEntries">1,024</span></div>
     <div><span class="k">TABLES</span><span class="v"><span id="stTables">14</span> / 16</span></div>
-    <div><span class="k">COIN CHARGED</span><span class="v">¥<span id="stCoin">2.40</span>M</span></div>
+    <div><span class="k">DMCC CHARGED</span><span class="v">¥<span id="stCoin">2.40</span>M</span></div>
     <div class="sp"></div>
     <div class="tag">REAL-TIME FROM THE SCREENS BELOW ↓</div>
   </div>
@@ -1106,7 +1191,7 @@ body.rest .spot{opacity:0}
 
         <div class="tabbar">
           <div class="tab on"><i>◆</i>HOME</div><div class="tab"><i>♪</i>DJ</div>
-          <div class="tab"><i>▮</i>VIP</div><div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
+          <div class="tab"><i>▮</i>VIP</div><div class="tab"><i>♡</i>MATCH</div><div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
         </div>
       </div>
     </div>
@@ -1213,7 +1298,7 @@ body.rest .spot{opacity:0}
 
         <div class="tabbar">
           <div class="tab"><i>◆</i>HOME</div><div class="tab on"><i>♪</i>DJ</div>
-          <div class="tab"><i>▮</i>VIP</div><div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
+          <div class="tab"><i>▮</i>VIP</div><div class="tab"><i>♡</i>MATCH</div><div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
         </div>
       </div>
     </div>
@@ -1230,7 +1315,7 @@ body.rest .spot{opacity:0}
     </div>
     </div>
 
-    <!-- ══════════ PHONE 3 · VIP × COIN ══════════ -->
+    <!-- ══════════ PHONE 3 · VIP × DMCC ══════════ -->
     <div class="pcol">
     <div class="phone" id="ph3">
       <div class="screen">
@@ -1262,7 +1347,7 @@ body.rest .spot{opacity:0}
         </div>
 
         <div class="usefor">
-          <span class="mini">COIN 使用先</span>
+          <span class="mini">DMCC 使用先</span>
           <span class="chip gh">VIP</span><span class="chip gh">BOTTLE</span>
           <span class="chip gh">TICKET</span><span class="chip gh">MERCH</span>
         </div>
@@ -1274,17 +1359,17 @@ body.rest .spot{opacity:0}
           <div class="st">PAYMENT</div>
           <div class="paytog">
             <div class="pt on" id="ptCard"><div class="k">CARD</div><div class="v">¥180,000</div></div>
-            <div class="pt" id="ptCoin"><span class="bn">+15% BONUS</span><div class="k">MUIN COIN</div><div class="v">180,000 MC</div></div>
+            <div class="pt" id="ptCoin"><span class="bn">+15% BONUS</span><div class="k">DMCC</div><div class="v">180,000 DMCC</div></div>
           </div>
           <div class="wallet" id="wallet">
             <span class="k">チャージ ¥180,000 →</span>
-            <span class="v"><span id="walletV">180,000</span> MC<u>+27,000</u></span>
+            <span class="v"><span id="walletV">180,000</span> DMCC<u>+27,000</u></span>
           </div>
           <div style="display:flex;gap:5px;margin-top:8px">
             <span class="chip gh" style="opacity:.5">PayPay — COMING</span>
             <span class="chip gh" style="opacity:.5">交通系IC — COMING</span>
           </div>
-          <button class="paybtn" id="pay3">PAY WITH COIN</button>
+          <button class="paybtn" id="pay3">PAY WITH DMCC</button>
           <div class="fine">事前チャージで来店前に決済完了 · 前日キャンセル50%</div>
         </div>
 
@@ -1298,17 +1383,17 @@ body.rest .spot{opacity:0}
 
         <div class="tabbar">
           <div class="tab"><i>◆</i>HOME</div><div class="tab"><i>♪</i>DJ</div>
-          <div class="tab on"><i>▮</i>VIP</div><div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
+          <div class="tab on"><i>▮</i>VIP</div><div class="tab"><i>♡</i>MATCH</div><div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
         </div>
       </div>
     </div>
     <div class="pcap">
-      <div class="ix"><b>03</b><span>VIP TABLE × MUIN COIN</span></div>
+      <div class="ix"><b>03</b><span>VIP TABLE × DMCC（ダグコイン）</span></div>
       <div class="ds">収益の中心。座席マップから卓を選び、コインで決済するまでの全工程を通しで再現しています。<span class="ko">수익의 중심. 좌석 맵에서 테이블을 고르고 코인으로 결제하기까지 전 과정을 재현했습니다.</span></div>
       <div class="wl">見どころ / WATCH FOR</div>
       <ul>
         <li>ゾーン <b>A / B / S</b> をタップするたび、写真・人数・込みボトル・価格が切り替わります<span class="ko">존 <b>A / B / S</b>를 탭할 때마다 사진·인원·포함 보틀·가격이 바뀝니다</span></li>
-        <li><b>MUIN COIN</b> を選ぶと ¥180,000 → <b>207,000 MC（+15%）</b> がその場で計算されます<span class="ko">MUIN COIN을 고르면 ¥180,000 → <b>207,000 MC (+15%)</b>가 즉석에서 계산됩니다</span></li>
+        <li><b>DMCC</b> を選ぶと ¥180,000 → <b>207,000 DMCC（+15%）</b> がその場で計算されます<span class="ko">DMCC를 고르면 ¥180,000 → <b>207,000 DMCC (+15%)</b>가 즉석에서 계산됩니다</span></li>
         <li>決済が完了すると <em>01</em> の残り卓数と <b>OPERATOR VIEW</b> の売上が同時に動きます<span class="ko">결제가 끝나면 01의 잔여 테이블과 OPERATOR VIEW의 매출이 동시에 움직입니다</span></li>
       </ul>
     </div>
@@ -1387,7 +1472,7 @@ body.rest .spot{opacity:0}
 
         <div class="tabbar">
           <div class="tab"><i>◆</i>HOME</div><div class="tab"><i>♪</i>DJ</div>
-          <div class="tab"><i>▮</i>VIP</div><div class="tab"><i>◈</i>COIN</div><div class="tab on"><i>●</i>MY</div>
+          <div class="tab"><i>▮</i>VIP</div><div class="tab"><i>♡</i>MATCH</div><div class="tab"><i>◈</i>COIN</div><div class="tab on"><i>●</i>MY</div>
         </div>
       </div>
     </div>
@@ -1400,6 +1485,95 @@ body.rest .spot{opacity:0}
         <li>スタンプは <b>5 / 10 / 20回</b> で特典が解放。来店頻度そのものが設計されています<span class="ko">스탬프는 <b>5 / 10 / 20회</b>에 혜택이 열립니다. 방문 빈도 자체를 설계했습니다</span></li>
         <li><b>TABLE JOIN</b> は割り勘で卓を埋める機能。人数が増えるほど1人あたりが下がります<span class="ko">TABLE JOIN은 더치페이로 테이블을 채우는 기능. 인원이 늘수록 1인당 금액이 내려갑니다</span></li>
       </ul>
+    </div>
+    </div>
+
+    <!-- ══════════ PHONE 5 · MATCH (데이팅) ══════════ -->
+    <div class="pcol">
+    <div class="phone p5" id="ph5">
+      <div class="screen">
+        <div class="statusbar"><span class="clk">23:41</span><span>MATCH</span></div>
+        <div class="mhead">
+          <span class="lg">MATCH</span>
+          <span class="tn">今夜 店内 138人</span>
+        </div>
+
+        <div class="deck" id="deck">
+          <div class="pcard back" id="pcB">
+            <div class="ph3 mp2"></div><div class="scr2"></div>
+            <div class="pbody"><div class="nm2">RIN</div></div>
+          </div>
+          <div class="pcard" id="pcA">
+            <div class="ph3 mp1"></div><div class="scr2"></div>
+            <span class="here"><i></i>同じフロア</span>
+            <span class="pin2" id="pcZone">B ZONE</span>
+            <div class="pbody">
+              <div class="nm2" id="pcName">MIKA</div>
+              <div class="sub2" id="pcSub">26 · 東京 · JP / EN</div>
+              <div class="tags" id="pcTags">
+                <span>HOUSE</span><span>TECHNO</span><span>初来店</span>
+              </div>
+            </div>
+          </div>
+          <div class="matched" id="matched">
+            <div>
+              <div class="duo"><i class="mp1"></i><i class="mp3"></i></div>
+              <div class="mt2">IT'S A MATCH</div>
+              <div class="ms2">お互いに「いいね」— 今、同じ店内にいます<span class="ko">서로 좋아요 — 지금 같은 매장 안에 있습니다</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acts">
+          <div class="ab" id="abPass">✕</div>
+          <div class="ab like" id="abLike">♥</div>
+        </div>
+        <div class="mnote">✕ / ♥ を押して操作できます · 入場チェックイン済みの人だけ表示<span class="ko">✕ / ♥ 를 눌러 직접 조작해 보세요 · 체크인한 사람만 표시</span></div>
+
+        <div class="mstat" id="mstat">
+          <div class="sr"><span class="k2">今夜のマッチ</span><span class="v2" id="msMatch">24</span><span class="u2">組</span></div>
+          <div class="sr"><span class="k2">相席が成立した卓</span><span class="v2" id="msTable">9</span><span class="u2">卓</span></div>
+          <div class="sr hi"><span class="k2">そこから生まれた売上</span><span class="v2">¥<span id="msRev">412,000</span></span></div>
+          <div class="sfoot">出会いが、そのまま卓売上になる<span class="ko">만남이 그대로 테이블 매출이 된다</span></div>
+        </div>
+
+        <div class="mchat" id="mchat" style="display:none">
+          <div class="cl">CHAT · 店内限定</div>
+          <div class="b them">こんばんは！ B ZONEにいます 🙂</div>
+          <div class="b me">S TABLE で飲んでます。合流します？</div>
+          <div class="inv2" id="inv2">テーブルに招待 — TABLE JOIN</div>
+        </div>
+
+        <div class="tabbar">
+          <div class="tab"><i>◆</i>HOME</div><div class="tab"><i>♪</i>DJ</div>
+          <div class="tab"><i>▮</i>VIP</div><div class="tab on"><i>♡</i>MATCH</div>
+          <div class="tab"><i>◈</i>COIN</div><div class="tab"><i>●</i>MY</div>
+        </div>
+      </div>
+    </div>
+    <div class="pcap">
+      <div class="ix"><b>05</b><span>MATCH — 店内限定マッチング</span></div>
+      <div class="ds">その夜、同じ店内にいる人だけがつながる。出会いがテーブルの相席に変わり、そのまま卓売上になります。<span class="ko">그날 밤 같은 매장 안에 있는 사람끼리만 연결됩니다. 만남이 합석으로, 합석이 테이블 매출로 이어집니다.</span></div>
+      <div class="wl">動作の流れ / 동작 방식</div>
+      <ul>
+        <li><b>① 入場QRでチェックイン</b>した人だけが候補に出ます — 店の外・別の日の人は出てきません<span class="ko">입장 QR로 체크인한 사람만 후보에 뜹니다 — 매장 밖·다른 날 사람은 안 나옵니다</span></li>
+        <li><b>② プロフィール</b>はニックネーム・年齢・言語・好きなジャンル・今いるゾーン（フロア / B卓）まで<span class="ko">닉네임·나이·언어·좋아하는 장르·지금 있는 존까지 표시</span></li>
+        <li><b>③ ✕ / ♥ で選び、両想いで初めてマッチ</b> — 連絡先は交換しません<span class="ko">✕ / ♥로 고르고 서로 좋아요일 때만 매칭 — 연락처는 교환하지 않습니다</span></li>
+        <li><b>④ マッチ後はアプリ内チャット</b>、そのまま<b>テーブルに招待</b>できます → <em>04</em> の TABLE JOIN（割り勘）へ<span class="ko">매칭되면 앱 내 채팅, 그대로 테이블 초대 → 04의 TABLE JOIN(더치페이)으로</span></li>
+        <li><b>⑤ 退店から24時間で会話は自動終了</b> — 「その夜だけ」に閉じることが安全装置になります<span class="ko">퇴장 후 24시간이면 대화 자동 종료 — 「그날 밤만」으로 닫는 것이 안전장치</span></li>
+        <li>本人確認・通報 / ブロック・スクリーンショット通知を標準装備<span class="ko">본인확인·신고/차단·스크린샷 알림 기본 탑재</span></li>
+      </ul>
+      <div class="mkt">
+        <div class="mk1">なぜこの機能が中心なのか</div>
+        <div class="mk2">
+          マッチングは日本で<b>すでに日常</b>です。ただし既存アプリは「会うまで」で終わり、<b>店の売上にはつながりません</b>。<br>
+          MU:IN は<b>「その夜・同じ店内」だけ</b>に絞ることで、出会いを<b>相席 → 卓 → ボトル</b>へ直結させます。
+          集客・滞在時間・客単価が同時に上がる、<b>クラブ側にしか作れない設計</b>です。
+          <span class="ko">매칭은 일본에서 이미 일상입니다. 다만 기존 앱은 「만나기까지」에서 끝나고 매장 매출로는 이어지지 않습니다.
+          MU:IN은 「그날 밤·같은 매장」으로만 좁혀서, 만남을 합석 → 테이블 → 보틀로 직결시킵니다.
+          집객·체류시간·객단가가 동시에 올라가는, 클럽만이 만들 수 있는 설계입니다.</span>
+        </div>
+      </div>
     </div>
     </div>
 
@@ -1473,7 +1647,7 @@ body.rest .spot{opacity:0}
             <div class="kpi">
               <span class="k">TODAY REVENUE</span>
               <div class="v">¥<span id="opRev">1,640,000</span></div>
-              <div class="s">テーブル + コイン + 入場</div>
+              <div class="s">テーブル + DMCC + 入場</div>
             </div>
           </div>
 
@@ -1494,7 +1668,7 @@ body.rest .spot{opacity:0}
               <div class="q"><span class="nm">ゲストリスト · 3件</span><span class="st">PENDING</span></div>
               <div class="q"><span class="nm">テーブル予約 · S</span><span class="st ok" id="opQ2">CONFIRMED</span></div>
               <div class="q"><span class="nm">DJリクエスト集計</span><span class="st">23:00 締切</span></div>
-              <div class="q"><span class="nm">コイン精算 · 日次</span><span class="st">05:00 AUTO</span></div>
+              <div class="q"><span class="nm">DMCC精算 · 日次</span><span class="st">05:00 AUTO</span></div>
             </div>
           </div>
         </div>
@@ -1514,52 +1688,52 @@ body.rest .spot{opacity:0}
     </div>
   </div>
 
-  <!-- ══════════ 規制対応 / 규제 대응 ══════════ -->
+  <!-- ══════════ DMCC PASSPORT — 결제 · 액세스 시스템 ══════════ -->
   <div class="reg">
     <div class="hd">
-      <span class="t">規制対応 — 二つの設計判断</span>
-      <span class="lb">日本の法規制を踏まえ、機能は残し呼び方を変えました<span class="ko">일본 법규제를 고려해 <b style="color:var(--tx-1)">기능은 남기고 이름만 바꿨습니다</b></span></span>
+      <span class="t">DMCC PASSPORT — 決済とアクセスの土台</span>
+      <span class="lb">保有量が、世界のフロアへのパスになる<span class="ko">보유량이 곧 세계의 플로어로 가는 패스가 된다</span></span>
     </div>
-    <div class="grid">
 
+    <div class="tiers">
+      <span class="tr2">BRONZE</span><span class="tr2">SILVER</span><span class="tr2">GOLD</span><span class="tr2 blk">BLACK</span>
+      <span class="tnote">保有量でティアが決まる — “AMEX BLACK FOR VIP RAVERS”
+        <span class="ko">보유량으로 등급이 결정된다 — 나이트라이프판 아멕스 블랙</span></span>
+    </div>
+
+    <div class="grid5">
       <div class="rc">
-        <div class="n">08 · COMMUNITY</div>
-        <div class="t">相席マッチング</div>
-        <div class="row">
-          <span class="was">出会い・ナンパ</span>
-          <span class="arw">→</span>
-          <span class="now">空席を埋める / TRAVELERS WELCOME</span>
-        </div>
-        <div class="d">
-          クラブが「異性との出会い」を掲げると<b style="color:var(--tx-1)">風営法上の規制対象</b>になり得ます。
-          そこで<b style="color:var(--tx-1)">機能はそのまま</b>に、目的を「空席を埋める・旅行者を歓迎する」と位置づけ直しました。
-          割り勘で卓を埋めるTABLE JOINは、店には空席ゼロ、客には一人あたりの負担減として働きます。
-          <span class="ko">클럽이 <b>이성 만남</b>을 내세우면 일본 <b style="color:var(--tx-1)">풍영법(風営法) 규제 대상</b>이 될 수 있습니다.
-          그래서 <b style="color:var(--tx-1)">기능은 그대로 두고</b> 목적을 「빈자리 채우기 · 여행객 환영」으로 다시 정의했습니다.
-          더치페이로 테이블을 채우는 TABLE JOIN은 업장엔 공석 제로, 손님에겐 1인당 부담 감소로 작동합니다.</span>
-        </div>
-        <div class="law">風俗営業等の規制及び業務の適正化等に関する法律</div>
+        <div class="n">01</div><div class="t">ACCESS &amp; ENTRY</div>
+        <div class="d">トークンゲート制ゲストリスト（世界中）<br>入場無料 / 割引・行列スキップのVIP入場<br>トークンがそのままデジタル会員証<br>大口保有者は招待制インダストリーイベントへ
+          <span class="ko">토큰 게이트 게스트리스트(전 세계) · 무료/할인 입장 · 줄 안 서는 VIP 입장 · 토큰이 곧 디지털 회원증 · 대형 보유자는 초대제 인더스트리 이벤트</span></div>
       </div>
-
       <div class="rc">
-        <div class="n">07 · MUIN COIN</div>
-        <div class="t">クラブ内通貨</div>
-        <div class="row">
-          <span class="was">Dmc / ダグコイン</span>
-          <span class="arw">→</span>
-          <span class="now">MUIN COIN — 前払式支払手段</span>
-        </div>
-        <div class="d">
-          「コイン・トークン」という呼称は<b style="color:var(--tx-1)">暗号資産と誤認</b>され、資金決済法の別枠規制を招きます。
-          そこで<b style="color:var(--tx-1)">+15%ボーナスの仕組みはそのまま</b>に、法的には<b style="color:var(--tx-1)">前払式支払手段（プリペイド）</b>として設計。
-          店内限定・換金なしとすることで、既存のプリペイドカードと同じ枠組みで運用できます。
-          <span class="ko">「코인·토큰」이라는 이름은 <b style="color:var(--tx-1)">암호자산으로 오인</b>되어 자금결제법의 별도 규제를 부릅니다.
-          그래서 <b style="color:var(--tx-1)">+15% 보너스 구조는 그대로</b> 두고, 법적으로는 <b style="color:var(--tx-1)">선불식 지급수단(선불카드)</b>으로 설계했습니다.
-          매장 한정·환금 불가로 하면 기존 선불카드와 같은 틀에서 운영할 수 있습니다.</span>
-        </div>
-        <div class="law">資金決済に関する法律 — 前払式支払手段</div>
+        <div class="n">02</div><div class="t">TABLES &amp; VIP</div>
+        <div class="d">世界のクラブ・フェスでテーブル予約<br>テーブルクレジット — トークンに貯まり、卓やボトルに変わる<br>専任コンシェルジュ・ゲスト管理
+          <span class="ko">전 세계 클럽·페스티벌 테이블 예약 · 테이블 크레딧(토큰에 적립 → 테이블·보틀로 전환) · 전담 컨시어지</span></div>
       </div>
+      <div class="rc">
+        <div class="n">03</div><div class="t">ARTIST</div>
+        <div class="d">ヘッドライナーとのミート&amp;グリート<br>バックステージ / グリーンルーム<br>サウンドチェック・リハーサル同席<br>アーティスト直筆サイン入りグッズ
+          <span class="ko">헤드라이너 미트&amp;그리트 · 백스테이지/그린룸 · 사운드체크 참관 · 친필 사인 굿즈</span></div>
+      </div>
+      <div class="rc">
+        <div class="n">04</div><div class="t">STATUS</div>
+        <div class="d">4ティア（BRONZE / SILVER / GOLD / BLACK）<br>参加証明バッジ（POAP）がオンチェーンに残る<br>保有者限定パーティー・ポップアップ<br>年次フラッグシップ・サミット
+          <span class="ko">4등급 · 참석 증명 배지(POAP) 온체인 기록 · 보유자 전용 파티/팝업 · 연례 서밋</span></div>
+      </div>
+      <div class="rc">
+        <div class="n">05</div><div class="t">TRAVEL</div>
+        <div class="d">フェス旅行パッケージ（航空券・ホテル・送迎・AAA）<br>現地パートナーによるレイブトリップ<br>提携ホテル割引<br>各都市のナイトライフ・コンシェルジュ
+          <span class="ko">페스티벌 여행 패키지(항공·호텔·이동·AAA) · 현지 파트너 레이브 트립 · 제휴 호텔 할인 · 도시별 나이트라이프 컨시어지</span></div>
+      </div>
+    </div>
 
+    <div class="pfoot">
+      <span class="pf1">400+</span> の世界トップイベントと連携済み
+      <span class="pdot">·</span> チャージで <span class="pf2">+15%</span> ボーナス
+      <span class="pdot">·</span> MU:IN TOKYO の入場・テーブル・ボトル・グッズすべてに使用可能
+      <span class="ko">400개 이상의 세계 톱 이벤트와 이미 연동 · 충전 시 15% 보너스 · MU:IN TOKYO의 입장·테이블·보틀·굿즈 전부에 사용 가능</span>
     </div>
   </div>
 
@@ -1567,7 +1741,7 @@ body.rest .spot{opacity:0}
   <div class="smap">
     <div class="hd">
       <span class="t">FULL SITEMAP — 12 MODULES</span>
-      <span class="lb">うち9モジュールは上のデモで動作中 · ¥ = 収益ポイント<span class="ko">이 중 9개 모듈은 위 데모에서 실제 동작 중 · ¥ = 수익 포인트</span></span>
+      <span class="lb">うち10モジュールは上のデモで動作中 · ¥ = 収益ポイント<span class="ko">이 중 10개 모듈은 위 데모에서 실제 동작 중 · ¥ = 수익 포인트</span></span>
     </div>
     <div class="grid">
       <div class="sc live-cell"><span class="on2">DEMO</span><div class="n">01</div><div class="t">HOME</div>
@@ -1582,10 +1756,10 @@ body.rest .spot{opacity:0}
         <div class="d">発売音源・ミックスセット — Spotify / Apple / Beatport / SoundCloud / YouTube 連携<span class="ko">발매 음원·믹스셋 — 스포티파이/애플/비트포트/사운드클라우드/유튜브 연동</span></div></div>
       <div class="sc live-cell"><span class="yen">¥</span><div class="n">06</div><div class="t">VIP TABLE</div>
         <div class="d">座席別 写真・収容人数・価格・ボトル・リアルタイム予約<span class="ko">좌석별 사진·수용 인원·가격·보틀·실시간 예약</span></div></div>
-      <div class="sc live-cell"><span class="yen">¥</span><div class="n">07</div><div class="t">MUIN COIN</div>
-        <div class="d">チャージ +15% ボーナス — VIP・ボトル・チケット・グッズに使用<span class="ko">충전 +15% 보너스 — VIP·보틀·티켓·굿즈에 사용</span></div></div>
-      <div class="sc live-cell"><span class="on2">DEMO</span><div class="n">08</div><div class="t">COMMUNITY</div>
-        <div class="d">テーブルジョイン(割り勘)・チャット・旅行者マッチング<span class="ko">테이블 조인(더치페이)·채팅·여행객 매칭</span></div></div>
+      <div class="sc live-cell"><span class="yen">¥</span><div class="n">07</div><div class="t">DMCC（ダグコイン）</div>
+        <div class="d">DiscoverFeed Passport 連携トークン — チャージ +15% ボーナス、保有量でティア決定<span class="ko">디스커버피드 패스포트 연동 토큰 — 충전 +15% 보너스, 보유량으로 등급 결정</span></div></div>
+      <div class="sc live-cell"><span class="on2">DEMO</span><div class="n">08</div><div class="t">MATCH</div>
+        <div class="d">店内限定マッチング・チャット・テーブル相席（割り勘）<span class="ko">매장 한정 매칭·채팅·테이블 합석(더치페이)</span></div></div>
       <div class="sc live-cell"><span class="on2">DEMO</span><div class="n">09</div><div class="t">TREND</div>
         <div class="d">週間 — CLUB NEWS・DJ NEWS・EDM・FESTIVAL・PLAYLIST<span class="ko">주간 — 클럽 뉴스·DJ 뉴스·EDM·페스티벌·플레이리스트</span></div></div>
       <div class="sc"><div class="n">10</div><div class="t">EVENT CALENDAR</div>
@@ -2344,7 +2518,7 @@ function selectZone(z){
   if ($('zCap'))   $('zCap').textContent   = z.cap;
   if ($('zPrice')) $('zPrice').textContent = comma(z.price);
   if ($('ptCard')) $('ptCard').querySelector('.v').textContent = '¥' + comma(z.price);
-  if ($('ptCoin')) $('ptCoin').querySelector('.v').textContent = comma(z.price) + ' MC';
+  if ($('ptCoin')) $('ptCoin').querySelector('.v').textContent = comma(z.price) + ' DMCC';
   if ($('walletV')) $('walletV').textContent = comma(z.price);
   if ($('cta3'))   $('cta3').textContent = 'RESERVE ' + z.id + ' — 予約する';
   paintPromo(z);
@@ -2382,7 +2556,7 @@ function p3Loop(){
     if ($('ptCoin')) $('ptCoin').classList.remove('on');
     if ($('ptCard')) $('ptCard').classList.add('on');
     if ($('wallet')) $('wallet').classList.remove('on');
-    if ($('pay3')){ $('pay3').classList.remove('busy'); $('pay3').textContent = 'PAY WITH COIN'; }
+    if ($('pay3')){ $('pay3').classList.remove('busy'); $('pay3').textContent = 'PAY WITH DMCC'; }
     syncA(z); syncE(z);
     zIx++;
   }, 8500);
@@ -2536,6 +2710,77 @@ $$('#marqTr span').forEach(function(sp){
     $$('.roster .r').forEach(function(r){ r.style.opacity = ''; });
   });
 });
+
+/* ══════════ P5 · MATCH — 실제 조작 + 자동 시연 ══════════
+   버튼을 누르면 그 즉시 사람이 조작한 대로 움직이고, 자동 시연은 멈춘다.
+   아무도 건드리지 않으면 스스로 한 바퀴씩 돌며 흐름을 보여준다. */
+(function(){
+  var deck = $('deck'); if (!deck) return;
+  var A = $('pcA'), matched = $('matched'),
+      pass = $('abPass'), like = $('abLike'), chat = $('mchat'),
+      nameEl = $('pcName'), subEl = $('pcSub'), tagEl = $('pcTags'), zoneEl = $('pcZone'),
+      inv = $('inv2');
+
+  var PEOPLE = [
+    { n:'MIKA', s:'26 · 東京 · JP / EN',  t:['HOUSE','TECHNO','初来店'], z:'B ZONE', c:'mp1' },
+    { n:'RIN',  s:'24 · 大阪 · JP',       t:['EDM','K-POP'],            z:'FLOOR',  c:'mp2' },
+    { n:'JOON', s:'29 · SEOUL · KO / EN', t:['TECHNO','AFTER'],         z:'A ZONE', c:'mp3' },
+    { n:'AYA',  s:'27 · 横浜 · JP / EN',  t:['HOUSE','BOTTLE'],         z:'S TABLE',c:'mp2' }
+  ];
+  var i = 0, busy = false, manual = false, auto = null;
+
+  function paint(p){
+    nameEl.textContent = p.n; subEl.textContent = p.s; zoneEl.textContent = p.z;
+    tagEl.innerHTML = p.t.map(function(x){ return '<span>' + x + '</span>'; }).join('');
+    A.querySelector('.ph3').className = 'ph3 ' + p.c;
+  }
+  function tapBtn(el){ el.classList.add('hit'); setTimeout(function(){ el.classList.remove('hit'); }, 220); }
+  function nextCard(){ i = (i + 1) % PEOPLE.length; paint(PEOPLE[i]); }
+
+  function doPass(){
+    if (busy) return; busy = true;
+    tapBtn(pass); A.classList.add('gone-l');
+    setTimeout(function(){ A.classList.remove('gone-l'); nextCard(); busy = false; }, 560);
+  }
+  function doLike(){
+    if (busy) return; busy = true;
+    tapBtn(like); A.classList.add('gone-r');
+    setTimeout(function(){
+      matched.classList.add('show');
+      var m = $('msMatch'), t = $('msTable'), r = $('msRev');
+      if (m) m.textContent = (+m.textContent + 1);
+      if (t && Math.random() < .5){
+        t.textContent = (+t.textContent + 1);
+        if (r) r.textContent = (parseInt(r.textContent.replace(/,/g,''),10) + 46000).toLocaleString();
+      }
+    }, 480);
+    setTimeout(function(){ chat.style.display = 'block'; var ms=$('mstat'); if(ms) ms.style.display='none'; }, 1500);
+  }
+  function reset(){
+    matched.classList.remove('show'); chat.style.display = 'none';
+    var ms = $('mstat'); if (ms) ms.style.display = 'block';
+    A.classList.remove('gone-r'); nextCard(); busy = false;
+  }
+
+  /* 사람이 누르면 자동 시연을 멈춘다 — 조작이 시연과 싸우지 않게 */
+  function manualize(){ if (!manual){ manual = true; clearInterval(auto); auto = null; } }
+  pass.addEventListener('click', function(){ manualize(); doPass(); });
+  like.addEventListener('click', function(){ manualize(); doLike(); });
+  matched.addEventListener('click', function(){ manualize(); reset(); });
+  if (inv) inv.addEventListener('click', function(e){ e.stopPropagation(); manualize(); reset(); });
+  [pass, like].forEach(function(b){ b.style.cursor = 'pointer'; });
+  matched.style.pointerEvents = 'auto';
+
+  /* 자동 시연 한 바퀴: PASS → LIKE → 매칭 → 채팅 → 리셋 */
+  function cycle(){
+    if (manual) return;
+    doPass();
+    setTimeout(function(){ if (!manual) doLike(); }, 1900);
+    setTimeout(function(){ if (!manual) reset(); }, 6900);
+  }
+  paint(PEOPLE[0]);
+  if (!REDUCED){ cycle(); auto = setInterval(cycle, 8600); }
+})();
 
 /* ══════════ MUSIC — 실제 유튜브 재생 (형님 공유 5곡) ══════════ */
 /* 진입 게이트가 호출할 음악 제어 핸들 (아래 MUSIC 블록에서 채워진다) */
