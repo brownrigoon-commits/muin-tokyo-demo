@@ -4031,6 +4031,7 @@ var I18N_TRY = {
       b.classList.toggle('on', b.getAttribute('data-lang') === l);
     });
     try { localStorage.setItem('muin-lang', l); } catch(e){}
+    if (window.__muinPaintUI) window.__muinPaintUI(l);
   }
   var saved = 'ja';
   try { saved = localStorage.getItem('muin-lang') || 'ja'; } catch(e){}
@@ -4038,6 +4039,506 @@ var I18N_TRY = {
   if (tog) [].slice.call(tog.querySelectorAll('button')).forEach(function(b){
     b.addEventListener('click', function(){ apply(b.getAttribute('data-lang')); });
   });
+})();
+
+/* ══════════ 앱 화면 안 문구도 선택 언어로 ══════════
+   설명부는 4개 언어 span으로 분리했지만, 기기 화면 안은 일본어 그대로였다.
+   여기서는 텍스트 노드를 훑어 사전에 있으면 바꿔 끼운다. 원문은 노드에 보관해 두므로
+   언어를 몇 번 바꿔도 원래 문장에서 다시 번역된다.
+   MU:IN·DMCC·DJ 이름·RESERVE 같은 영문 표기는 사전에 넣지 않아 그대로 남는다.
+   JS가 나중에 그리는 문구(존 정보·채팅·가이드 라벨)는 MutationObserver로 따라잡는다. */
+var UI_I18N = {
+ "開場まで": {
+  "ko": "개장까지",
+  "en": "DOORS IN",
+  "zh": "开场倒计时"
+ },
+ "S TABLE 残り1卓": {
+  "ko": "S TABLE 1卓 남음",
+  "en": "S TABLE · 1 LEFT",
+  "zh": "S TABLE 剩1桌"
+ },
+ "本日のラインナップ": {
+  "ko": "오늘의 라인업",
+  "en": "TONIGHT'S LINEUP",
+  "zh": "今日阵容"
+ },
+ "全て": {
+  "ko": "전체",
+  "en": "ALL",
+  "zh": "全部"
+ },
+ "入場まで約10分 · ENTRY ~10 MIN": {
+  "ko": "입장까지 약 10분 · ENTRY ~10 MIN",
+  "en": "~10 MIN TO ENTRY",
+  "zh": "入场约需10分钟 · ENTRY ~10 MIN"
+ },
+ "DRESS CODE: SMART · 20歳未満入場不可 / 要写真付き身分証": {
+  "ko": "DRESS CODE: SMART · 20세 미만 입장 불가 / 사진 신분증 필수",
+  "en": "DRESS CODE: SMART · 20+ ONLY / PHOTO ID REQUIRED",
+  "zh": "DRESS CODE: SMART · 未满20岁禁止入场 / 需出示附照片证件"
+ },
+ "TOKYO CLUB NEWS — 新宿ラウンドアップ 外5件": {
+  "ko": "TOKYO CLUB NEWS — 신주쿠 라운드업 외 5건",
+  "en": "TOKYO CLUB NEWS — Shinjuku roundup +5 more",
+  "zh": "TOKYO CLUB NEWS — 新宿汇总 外5则"
+ },
+ "毎週更新": {
+  "ko": "매주 갱신",
+  "en": "WEEKLY",
+  "zh": "每周更新"
+ },
+ "S TABLE 5/8 — 残り3席": {
+  "ko": "S TABLE 5/8 — 3석 남음",
+  "en": "S TABLE 5/8 — 3 SEATS LEFT",
+  "zh": "S TABLE 5/8 — 剩3位"
+ },
+ "8名 / MOËT ×2 + BELVEDERE ×1 込み": {
+  "ko": "8명 / MOËT ×2 + BELVEDERE ×1 포함",
+  "en": "8 guests / MOËT ×2 + BELVEDERE ×1 incl.",
+  "zh": "8人 / 含 MOËT ×2 + BELVEDERE ×1"
+ },
+ "税・サ込": {
+  "ko": "세금·봉사료 포함",
+  "en": "incl. tax & service",
+  "zh": "含税与服务费"
+ },
+ "DMCC 使用先": {
+  "ko": "DMCC 사용처",
+  "en": "DMCC USED FOR",
+  "zh": "DMCC 使用范围"
+ },
+ "RESERVE — 予約する": {
+  "ko": "RESERVE — 예약하기",
+  "en": "RESERVE",
+  "zh": "RESERVE — 立即预订"
+ },
+ "チャージ ¥180,000 →": {
+  "ko": "충전 ¥180,000 →",
+  "en": "TOP UP ¥180,000 →",
+  "zh": "充值 ¥180,000 →"
+ },
+ "交通系IC — COMING": {
+  "ko": "교통카드 — COMING",
+  "en": "TRANSIT IC — COMING",
+  "zh": "交通IC卡 — COMING"
+ },
+ "事前チャージで来店前に決済完了 · 前日キャンセル50%": {
+  "ko": "사전 충전으로 방문 전 결제 완료 · 전날 취소 50%",
+  "en": "Pre-charge and settle before you arrive · 50% fee if cancelled the day before",
+  "zh": "事先充值，到店前完成结账 · 前一日取消收50%"
+ },
+ "S — STAGE SIDE / 8名": {
+  "ko": "S — STAGE SIDE / 8명",
+  "en": "S — STAGE SIDE / 8 guests",
+  "zh": "S — STAGE SIDE / 8人"
+ },
+ "入場 −10%": {
+  "ko": "입장 −10%",
+  "en": "−10% ENTRY",
+  "zh": "入场 −10%"
+ },
+ "/人": {
+  "ko": "/인",
+  "en": "/person",
+  "zh": "/人"
+ },
+ "— 渋谷から2人、今向かってます": {
+  "ko": "— 시부야에서 2명, 지금 가는 중",
+  "en": "— Two of us from Shibuya, on the way",
+  "zh": "— 我们两人从涩谷出发，正在路上"
+ },
+ "空席をゼロに / FILL EVERY SEAT · TRAVELERS WELCOME EN·JA·KO": {
+  "ko": "빈자리 제로 / FILL EVERY SEAT · TRAVELERS WELCOME EN·JA·KO",
+  "en": "FILL EVERY SEAT · TRAVELERS WELCOME EN·JA·KO",
+  "zh": "让空位归零 / FILL EVERY SEAT · TRAVELERS WELCOME EN·JA·KO"
+ },
+ "今夜 店内": {
+  "ko": "오늘 밤 매장",
+  "en": "IN VENUE TONIGHT",
+  "zh": "今夜店内"
+ },
+ "人": {
+  "ko": "명",
+  "en": " guests",
+  "zh": "人"
+ },
+ "同じフロア": {
+  "ko": "같은 플로어",
+  "en": "SAME FLOOR",
+  "zh": "同一楼层"
+ },
+ "26 · 東京 · JP / EN": {
+  "ko": "26 · 도쿄 · JP / EN",
+  "en": "26 · Tokyo · JP / EN",
+  "zh": "26 · 东京 · JP / EN"
+ },
+ "今日はTECHNOだけ踊りたい": {
+  "ko": "오늘은 테크노만 추고 싶어",
+  "en": "Only want to dance techno tonight",
+  "zh": "今天只想跳 Techno"
+ },
+ "◆ 共通 — ALAN SHIRAHAMA をフォロー": {
+  "ko": "◆ 공통 — ALAN SHIRAHAMA 팔로우",
+  "en": "◆ IN COMMON — follows ALAN SHIRAHAMA",
+  "zh": "◆ 共同点 — 关注 ALAN SHIRAHAMA"
+ },
+ "今夜のマッチ": {
+  "ko": "오늘 밤 매칭",
+  "en": "MATCHES TONIGHT",
+  "zh": "今夜配对"
+ },
+ "組": {
+  "ko": "쌍",
+  "en": " pairs",
+  "zh": "对"
+ },
+ "相席が成立した卓": {
+  "ko": "합석 성사된 테이블",
+  "en": "TABLES SHARED",
+  "zh": "成功拼桌数"
+ },
+ "卓": {
+  "ko": "테이블",
+  "en": " tables",
+  "zh": "桌"
+ },
+ "そこから生まれた売上": {
+  "ko": "거기서 나온 매출",
+  "en": "REVENUE FROM IT",
+  "zh": "由此产生的营收"
+ },
+ "CHAT · 店内限定": {
+  "ko": "CHAT · 매장 한정",
+  "en": "CHAT · VENUE ONLY",
+  "zh": "CHAT · 限店内"
+ },
+ "送信": {
+  "ko": "전송",
+  "en": "SEND",
+  "zh": "发送"
+ },
+ "テーブルに招待 — TABLE JOIN": {
+  "ko": "테이블 초대 — TABLE JOIN",
+  "en": "INVITE TO TABLE — TABLE JOIN",
+  "zh": "邀请至桌位 — TABLE JOIN"
+ },
+ "メッセージを送る…": {
+  "ko": "메시지 보내기…",
+  "en": "Send a message…",
+  "zh": "发送消息…"
+ },
+ "テーブル + DMCC + 入場": {
+  "ko": "테이블 + DMCC + 입장",
+  "en": "Tables + DMCC + entry",
+  "zh": "桌位 + DMCC + 入场"
+ },
+ "ゲストリスト · 3件": {
+  "ko": "게스트리스트 · 3건",
+  "en": "Guestlist · 3",
+  "zh": "宾客名单 · 3件"
+ },
+ "テーブル予約 · S": {
+  "ko": "테이블 예약 · S",
+  "en": "Table booking · S",
+  "zh": "桌位预订 · S"
+ },
+ "DJリクエスト集計": {
+  "ko": "DJ 리퀘스트 집계",
+  "en": "DJ request tally",
+  "zh": "DJ 点歌统计"
+ },
+ "23:00 締切": {
+  "ko": "23:00 마감",
+  "en": "CLOSES 23:00",
+  "zh": "23:00 截止"
+ },
+ "DMCC精算 · 日次": {
+  "ko": "DMCC 정산 · 일일",
+  "en": "DMCC settlement · daily",
+  "zh": "DMCC 结算 · 每日"
+ },
+ "貸切": {
+  "ko": "대관",
+  "en": "RESERVED",
+  "zh": "包场"
+ },
+ "入場まで約25分 · ENTRY ~25 MIN": {
+  "ko": "입장까지 약 25분 · ENTRY ~25 MIN",
+  "en": "~25 MIN TO ENTRY",
+  "zh": "入场约需25分钟 · ENTRY ~25 MIN"
+ },
+ "すぐ入場できます · NO WAIT": {
+  "ko": "바로 입장 가능 · NO WAIT",
+  "en": "NO WAIT",
+  "zh": "可立即入场 · NO WAIT"
+ },
+ "6名 / 焼酎ボトル ×1 + ミキサー 込み": {
+  "ko": "6명 / 소주 보틀 ×1 + 믹서 포함",
+  "en": "6 guests / shochu bottle ×1 + mixers incl.",
+  "zh": "6人 / 含烧酒1瓶 + 调酒饮料"
+ },
+ "8名 / シャンパン ×1 + フルーツ 込み": {
+  "ko": "8명 / 샴페인 ×1 + 과일 포함",
+  "en": "8 guests / champagne ×1 + fruit incl.",
+  "zh": "8人 / 含香槟1瓶 + 水果"
+ },
+ "— 予約する": {
+  "ko": "— 예약하기",
+  "en": "— RESERVE",
+  "zh": "— 立即预订"
+ },
+ "完売": {
+  "ko": "완매",
+  "en": "SOLD OUT",
+  "zh": "售罄"
+ },
+ "FULL / 満席": {
+  "ko": "FULL / 만석",
+  "en": "FULL",
+  "zh": "FULL / 满席"
+ },
+ "FULL — 満席": {
+  "ko": "FULL — 만석",
+  "en": "FULL",
+  "zh": "FULL — 满席"
+ },
+ "TONIGHT: 23:00前 ENTRY FREE": {
+  "ko": "TONIGHT: 23:00 이전 입장 무료",
+  "en": "TONIGHT: FREE ENTRY BEFORE 23:00",
+  "zh": "TONIGHT: 23:00 前免费入场"
+ },
+ "友だち2人で来てます": {
+  "ko": "친구 2명과 왔어요",
+  "en": "Here with two friends",
+  "zh": "和两个朋友一起来"
+ },
+ "アフターまで行ける人": {
+  "ko": "애프터까지 갈 사람",
+  "en": "Someone who'll stay for the after",
+  "zh": "能去续摊的人"
+ },
+ "ボトル開けてます、合流歓迎": {
+  "ko": "보틀 열었어요, 합류 환영",
+  "en": "Bottle's open — come join",
+  "zh": "已开瓶，欢迎加入"
+ },
+ "Tokyo 3日目、案内してくれる人": {
+  "ko": "도쿄 3일째, 안내해줄 사람",
+  "en": "Day 3 in Tokyo — show me around?",
+  "zh": "东京第3天，求带路"
+ },
+ "旅行者ウェルカム": {
+  "ko": "여행자 환영",
+  "en": "Travellers welcome",
+  "zh": "欢迎旅客"
+ },
+ "24 · 大阪 · JP": {
+  "ko": "24 · 오사카 · JP",
+  "en": "24 · Osaka · JP",
+  "zh": "24 · 大阪 · JP"
+ },
+ "27 · 横浜 · JP / EN": {
+  "ko": "27 · 요코하마 · JP / EN",
+  "en": "27 · Yokohama · JP / EN",
+  "zh": "27 · 横滨 · JP / EN"
+ },
+ "こんばんは！": {
+  "ko": "안녕하세요!",
+  "en": "Good evening!",
+  "zh": "晚上好！"
+ },
+ "いいですね！": {
+  "ko": "좋아요!",
+  "en": "Sounds good!",
+  "zh": "不错啊！"
+ },
+ "どこの卓ですか？": {
+  "ko": "어느 테이블이에요?",
+  "en": "Which table?",
+  "zh": "哪一桌？"
+ },
+ "今から行きます 🙌": {
+  "ko": "지금 갈게요 🙌",
+  "en": "On my way 🙌",
+  "zh": "现在过去 🙌"
+ },
+ "OK！ 5分で": {
+  "ko": "OK! 5분이면",
+  "en": "OK! Five minutes",
+  "zh": "OK！5分钟"
+ },
+ "ありがとう！": {
+  "ko": "고마워요!",
+  "en": "Thanks!",
+  "zh": "谢谢！"
+ },
+ "招待しました — 合流待ち": {
+  "ko": "초대했습니다 — 합류 대기",
+  "en": "INVITED — waiting to join",
+  "zh": "已邀请 — 等待加入"
+ },
+ "行きます！": {
+  "ko": "갈게요!",
+  "en": "On my way!",
+  "zh": "我这就来！"
+ },
+ "都市を変える": {
+  "ko": "도시 바꾸기",
+  "en": "Change city",
+  "zh": "切换城市"
+ },
+ "DJを選ぶ": {
+  "ko": "DJ 고르기",
+  "en": "Pick a DJ",
+  "zh": "选择 DJ"
+ },
+ "クーポンを取る": {
+  "ko": "쿠폰 받기",
+  "en": "Get the coupon",
+  "zh": "领取优惠券"
+ },
+ "混雑度を見る": {
+  "ko": "혼잡도 보기",
+  "en": "Crowd level",
+  "zh": "查看拥挤度"
+ },
+ "DJを切替": {
+  "ko": "DJ 전환",
+  "en": "Switch DJ",
+  "zh": "切换 DJ"
+ },
+ "曲を再生": {
+  "ko": "곡 재생",
+  "en": "Play a track",
+  "zh": "播放曲目"
+ },
+ "投票する": {
+  "ko": "투표하기",
+  "en": "Vote",
+  "zh": "投票"
+ },
+ "席を選ぶ": {
+  "ko": "좌석 고르기",
+  "en": "Pick a seat",
+  "zh": "选择座位"
+ },
+ "予約する": {
+  "ko": "예약하기",
+  "en": "Reserve",
+  "zh": "预订"
+ },
+ "DMCCで払う": {
+  "ko": "DMCC로 결제",
+  "en": "Pay with DMCC",
+  "zh": "用 DMCC 支付"
+ },
+ "決済": {
+  "ko": "결제",
+  "en": "Pay",
+  "zh": "结账"
+ },
+ "閉じる": {
+  "ko": "닫기",
+  "en": "Close",
+  "zh": "关闭"
+ },
+ "カードを裏返す": {
+  "ko": "카드 뒤집기",
+  "en": "Flip the card",
+  "zh": "翻转卡片"
+ },
+ "スタンプを押す": {
+  "ko": "스탬프 찍기",
+  "en": "Add a stamp",
+  "zh": "盖章"
+ },
+ "相席に参加": {
+  "ko": "합석 참여",
+  "en": "Join the table",
+  "zh": "加入拼桌"
+ },
+ "① ゾーンで絞る": {
+  "ko": "① 존으로 좁히기",
+  "en": "① Filter by zone",
+  "zh": "① 按区域筛选"
+ },
+ "② 別の人を見る": {
+  "ko": "② 다른 사람 보기",
+  "en": "② See someone else",
+  "zh": "② 看下一位"
+ },
+ "③ この人に「いいね」": {
+  "ko": "③ 이 사람에게 좋아요",
+  "en": "③ Like this person",
+  "zh": "③ 喜欢这位"
+ },
+ "④ メッセージを書く": {
+  "ko": "④ 메시지 쓰기",
+  "en": "④ Write a message",
+  "zh": "④ 输入消息"
+ },
+ "⑤ 送信する": {
+  "ko": "⑤ 전송하기",
+  "en": "⑤ Send it",
+  "zh": "⑤ 发送"
+ },
+ "⑥ テーブルに招待": {
+  "ko": "⑥ 테이블 초대",
+  "en": "⑥ Invite to table",
+  "zh": "⑥ 邀请至桌位"
+ },
+ "⑦ 次の人へ": {
+  "ko": "⑦ 다음 사람",
+  "en": "⑦ Next person",
+  "zh": "⑦ 下一位"
+ }
+};
+
+(function(){
+  var painting = false;
+
+  function paintNode(n, lang){
+    if (n.__ja === undefined) n.__ja = n.nodeValue;
+    var src = (n.__ja || '').trim();
+    if (!src) return;
+    var d = UI_I18N[src];
+    if (!d) return;
+    var want = (lang === 'ja') ? src : (d[lang] || src);
+    var next = n.__ja.replace(src, want);
+    if (n.nodeValue !== next) n.nodeValue = next;
+  }
+
+  function paintAll(lang){
+    if (painting) return;
+    painting = true;
+    try {
+      document.querySelectorAll('.phone, .tablet, .gring').forEach(function(root){
+        var w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+        var n; while ((n = w.nextNode())) paintNode(n, lang);
+      });
+      /* 입력칸 안내문구 */
+      document.querySelectorAll('.phone input[placeholder]').forEach(function(el){
+        if (el.__ja === undefined) el.__ja = el.getAttribute('placeholder');
+        var d = UI_I18N[(el.__ja || '').trim()];
+        if (d) el.setAttribute('placeholder', lang === 'ja' ? el.__ja : (d[lang] || el.__ja));
+      });
+    } finally { painting = false; }
+  }
+
+  window.__muinPaintUI = paintAll;
+
+  /* JS가 새로 그리는 문구도 따라잡는다 */
+  var mo = new MutationObserver(function(){
+    if (painting) return;
+    var l = document.documentElement.getAttribute('data-lang') || 'ja';
+    if (l !== 'ja') paintAll(l);
+  });
+  document.querySelectorAll('.phone, .tablet').forEach(function(r){
+    mo.observe(r, { childList: true, subtree: true, characterData: true });
+  });
+
+  paintAll(document.documentElement.getAttribute('data-lang') || 'ja');
 })();
 
 /* ══════════ 루프 기동 (위상 스태거) ══════════ */
